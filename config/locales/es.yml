@@ -1,0 +1,30 @@
+es:
+  activerecord:
+    models:
+      criptico:
+        one: Críptico
+        other: Crípticos
+      jugador:
+        one: Jugador
+        other: Jugadores
+      partida:
+        one: Partida
+        other: Partidas
+      puntaje_por_tipo:
+        one: Puntaje por tipo
+        other: Puntajes por tipo
+      multiplicador_dificultad:
+        one: Multiplicador de dificultad
+        other: Multiplicadores de dificultad
+      configuracion:
+        one: Configuración
+        other: Configuraciones
+      sincronizacion:
+        one: Sincronización
+        other: Sincronizaciones
+      nodo_chatbot:
+        one: Nodo del chatbot
+        other: Nodos del chatbot
+      user:
+        one: Usuario
+        other: Usuarios
