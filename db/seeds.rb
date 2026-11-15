@@ -7,3 +7,6 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+# Catálogo de crípticos: se trae de la API con el mismo sincronizador que usa el admin.
+load Rails.root.join("db/seeds/cripticos.rb")
