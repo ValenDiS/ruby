@@ -28,3 +28,13 @@ es:
       user:
         one: Usuario
         other: Usuarios
+    attributes:
+      user:
+        email_address: Email
+        password: Contraseña
+        password_confirmation: Confirmación de contraseña
+        rol: Rol
+        activo: Activo
+      user/rol:
+        admin: Administrador
+        editor_puntajes: Editor de puntajes
