@@ -30,13 +30,13 @@ class SessionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "una sesión abierta deja de valer si el usuario se desactiva" do
-    sign_in_as(@user)
-    @user.update!(activo: false)
+    editor = users(:editor)
+    sign_in_as(editor)
+    editor.update!(activo: false)
 
-    delete session_path
+    get admin_root_path
 
     assert_redirected_to new_session_path
-    assert Session.exists?(user: @user), "no debería poder cerrar sesión porque ya no está autenticado"
   end
 
   test "destroy" do

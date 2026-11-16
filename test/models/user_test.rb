@@ -34,6 +34,16 @@ class UserTest < ActiveSupport::TestCase
     assert_not User.new(email_address: "nuevo@example.com", password: "corta").valid?
   end
 
+  test "no se puede desactivar ni degradar al último admin activo" do
+    assert_not users(:admin).update(activo: false)
+    assert_not users(:admin).update(rol: "editor_puntajes")
+  end
+
+  test "un admin se puede desactivar si queda otro activo" do
+    users(:inactivo).update!(activo: true)
+    assert users(:admin).update(activo: false)
+  end
+
   test "autenticar devuelve al usuario activo con credenciales correctas" do
     assert_equal users(:admin), User.autenticar(email_address: "admin@example.com", password: "password")
   end
