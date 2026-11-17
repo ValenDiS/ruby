@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     resources :users, only: %i[ index new create edit update ]
     resources :puntajes_por_tipo, only: %i[ index update ]
     resources :multiplicadores_dificultad, only: :update
+    resource :configuracion, only: %i[ edit update ]
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

@@ -1,0 +1,30 @@
+<h1 class="h3 mb-3">Configuración</h1>
+
+<%= form_with model: @configuracion, url: admin_configuracion_path, method: :patch do |form| %>
+  <% if @configuracion.errors.any? %>
+    <div class="alert alert-danger">
+      <ul class="mb-0">
+        <% @configuracion.errors.full_messages.each do |mensaje| %>
+          <li><%= mensaje %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :url_fuente, class: "form-label" %>
+    <%= form.url_field :url_fuente, required: true, class: "form-control" %>
+    <div class="form-text">Dirección del JSON de crípticos que se usa al sincronizar.</div>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :texto_bienvenida, class: "form-label" %>
+    <%= form.text_area :texto_bienvenida, rows: 4, required: true, class: "form-control" %>
+  </div>
+
+  <%= form.submit "Guardar", class: "btn btn-primary" %>
+<% end %>
+
+<p class="mt-4">
+  Los puntos por tipo y los multiplicadores se editan en <%= link_to "Puntajes", admin_puntajes_por_tipo_path %>.
+</p>

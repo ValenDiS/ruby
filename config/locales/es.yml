@@ -44,6 +44,9 @@ es:
       multiplicador_dificultad:
         dificultad: Dificultad
         valor: Multiplicador
+      configuracion:
+        url_fuente: URL de la fuente de crípticos
+        texto_bienvenida: Texto de bienvenida
   cripticos:
     tipos:
       anagrama: Anagrama

@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_17_004404) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_17_042305) do
+  create_table "configuraciones", force: :cascade do |t|
+    t.string "url_fuente", default: "https://ecorrons.github.io/cryptics-api/v1/cryptics.json", null: false
+    t.text "texto_bienvenida", default: "¡Bienvenido a Rubípticos! Elegí una dificultad y resolvé crípticos.", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.check_constraint "id = 1", name: "configuraciones_fila_unica"
+  end
+
   create_table "multiplicadores_dificultad", force: :cascade do |t|
     t.string "dificultad", null: false
     t.decimal "valor", precision: 3, scale: 2, default: "1.0", null: false
