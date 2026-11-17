@@ -1,4 +1,5 @@
 require "test_helper"
+require "socket"
 
 class SincronizadorDeCripticosTest < ActiveSupport::TestCase
   URL = "https://ejemplo.test/v1/cryptics.json".freeze
@@ -140,5 +141,68 @@ class SincronizadorDeCripticosTest < ActiveSupport::TestCase
     sinc = SincronizadorDeCripticos.new(url: URL, usuario: admin, cliente_http: cliente_con("cryptics.json")).call
 
     assert_equal 7, sinc.user_id
+  end
+
+  # ---------- Descarga real por HTTP (servidor local, sin internet) ----------
+
+  # Levanta un servidor HTTP mínimo en 127.0.0.1 (puerto libre) que responde
+  # según la ruta pedida. rutas: { "/ruta" => [ código, encabezados, cuerpo ] }.
+  # Así se prueba el Net::HTTP de verdad sin depender de la API de la cátedra.
+  def con_servidor(rutas)
+    servidor = TCPServer.new("127.0.0.1", 0)
+    hilo = Thread.new do
+      loop do
+        conexion = servidor.accept
+        ruta = conexion.gets.to_s.split[1]
+        loop { break if conexion.gets.to_s.chomp.empty? } # saltea los encabezados del pedido
+
+        codigo, encabezados, cuerpo = rutas.fetch(ruta, [ 404, {}, "" ])
+        conexion.write "HTTP/1.1 #{codigo} X\r\n"
+        encabezados.merge("Content-Length" => cuerpo.bytesize, "Connection" => "close").each do |nombre, valor|
+          conexion.write "#{nombre}: #{valor}\r\n"
+        end
+        conexion.write "\r\n#{cuerpo}"
+        conexion.close
+      end
+    end
+
+    yield "http://127.0.0.1:#{servidor.addr[1]}"
+  ensure
+    hilo&.kill
+    servidor&.close
+  end
+
+  test "descarga por HTTP y sigue una redirección" do
+    json = file_fixture("cryptics.json").read
+    rutas = {
+      "/viejo" => [ 301, { "Location" => "/v1/cryptics.json" }, "" ],
+      "/v1/cryptics.json" => [ 200, { "Content-Type" => "application/json" }, json ]
+    }
+
+    con_servidor(rutas) do |base|
+      sinc = SincronizadorDeCripticos.new(url: "#{base}/viejo").call
+
+      assert sinc.exitosa?, sinc.resumen
+      assert_equal 34, sinc.creados
+    end
+  end
+
+  test "una respuesta HTTP de error se informa y no toca nada" do
+    con_servidor({}) do |base|
+      sinc = SincronizadorDeCripticos.new(url: "#{base}/no-existe").call
+
+      assert sinc.fallida?
+      assert_match(/HTTP 404/, sinc.mensaje_error)
+      assert_equal 0, Criptico.count
+    end
+  end
+
+  test "corta si la fuente redirige en bucle" do
+    con_servidor("/bucle" => [ 302, { "Location" => "/bucle" }, "" ]) do |base|
+      sinc = SincronizadorDeCripticos.new(url: "#{base}/bucle").call
+
+      assert sinc.fallida?
+      assert_match(/demasiadas veces/, sinc.mensaje_error)
+    end
   end
 end

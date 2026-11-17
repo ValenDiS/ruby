@@ -17,6 +17,7 @@ require "net/http"
 class SincronizadorDeCripticos
   URL_POR_DEFECTO = "https://ecorrons.github.io/cryptics-api/v1/cryptics.json".freeze
   TIMEOUT = 10 # segundos
+  MAX_REDIRECCIONES = 3 # por ej. http:// → https:// en GitHub Pages
 
   # Errores de la fuente: red, HTTP o JSON. Ante cualquiera de estos no se toca la base.
   class ErrorDeFuente < StandardError; end
@@ -79,7 +80,10 @@ class SincronizadorDeCripticos
     raise ErrorDeFuente, "No se pudo conectar con #{url}: #{mensaje_de_red(e)}"
   end
 
-  def descargar(direccion)
+  # Net::HTTP no sigue redirecciones solo: si la fuente responde 301/302
+  # (por ejemplo, GitHub Pages pasando de http a https), se sigue la nueva
+  # dirección hasta MAX_REDIRECCIONES veces.
+  def descargar(direccion, redirecciones_restantes = MAX_REDIRECCIONES)
     uri = URI.parse(direccion)
     raise ErrorDeFuente, "La URL de la fuente no es válida: #{direccion.inspect}" unless uri.is_a?(URI::HTTP) && uri.host.present?
 
@@ -87,6 +91,12 @@ class SincronizadorDeCripticos
                                 use_ssl: uri.scheme == "https",
                                 open_timeout: TIMEOUT, read_timeout: TIMEOUT) do |http|
       http.get(uri.request_uri, "Accept" => "application/json")
+    end
+
+    if respuesta.is_a?(Net::HTTPRedirection) && respuesta["location"].present?
+      raise ErrorDeFuente, "La fuente redirigió demasiadas veces" if redirecciones_restantes.zero?
+
+      return descargar(URI.join(direccion, respuesta["location"]).to_s, redirecciones_restantes - 1)
     end
 
     raise ErrorDeFuente, "La fuente respondió HTTP #{respuesta.code}" unless respuesta.is_a?(Net::HTTPSuccess)
