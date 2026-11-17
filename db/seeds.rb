@@ -11,3 +11,12 @@ User.find_or_create_by!(email_address: admin_email) do |user|
 end
 
 puts "Admin: #{admin_email}"
+
+# Valores iniciales del puntaje: 100 puntos por tipo y multiplicadores 1, 2 y 3.
+PuntajePorTipo::TIPOS.each do |tipo|
+  PuntajePorTipo.find_or_create_by!(tipo: tipo) { |puntaje| puntaje.puntos = 100 }
+end
+
+{ "facil" => 1, "medio" => 2, "avanzado" => 3 }.each do |dificultad, valor|
+  MultiplicadorDificultad.find_or_create_by!(dificultad: dificultad) { |multiplicador| multiplicador.valor = valor }
+end

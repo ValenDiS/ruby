@@ -38,3 +38,28 @@ es:
       user/rol:
         admin: Administrador
         editor_puntajes: Editor de puntajes
+      puntaje_por_tipo:
+        tipo: Tipo
+        puntos: Puntos
+      multiplicador_dificultad:
+        dificultad: Dificultad
+        valor: Multiplicador
+  cripticos:
+    tipos:
+      anagrama: Anagrama
+      oculta: Oculta
+      charada: Charada
+      contenedor: Contenedor
+      inversion: Inversión
+      supresion: Supresión
+      homofono: Homófono
+      doble_definicion: Doble definición
+      iniciales: Iniciales
+      finales: Finales
+      sustitucion: Sustitución
+      simbolos: Símbolos
+      combinada: Combinada
+    dificultades:
+      facil: Fácil
+      medio: Medio
+      avanzado: Avanzado

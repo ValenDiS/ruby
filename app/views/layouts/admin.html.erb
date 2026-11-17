@@ -22,6 +22,7 @@
           <div class="collapse navbar-collapse" id="menu-admin">
             <ul class="navbar-nav me-auto">
               <li class="nav-item"><%= link_to "Inicio", admin_root_path, class: "nav-link" %></li>
+              <li class="nav-item"><%= link_to "Puntajes", admin_puntajes_por_tipo_path, class: "nav-link" %></li>
               <% if Current.user.admin? %>
                 <li class="nav-item"><%= link_to "Usuarios", admin_users_path, class: "nav-link" %></li>
               <% end %>

@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   namespace :admin do
     root "dashboard#show"
     resources :users, only: %i[ index new create edit update ]
+    resources :puntajes_por_tipo, only: %i[ index update ]
+    resources :multiplicadores_dificultad, only: :update
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
