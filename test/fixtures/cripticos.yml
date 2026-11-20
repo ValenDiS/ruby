@@ -1,0 +1,15 @@
+mate:
+  id_fuente: cr-001
+  enunciado: La cama tejida esconde la infusión argentina
+  enumeracion: "(4)"
+  respuesta: MATE
+  definiciones: ["la infusión argentina"]
+  indicadores: ["esconde"]
+  material: ["cama tejida"]
+  tipo: oculta
+  dificultad: facil
+  ayuda: Leé de corrido el final de una palabra y el principio de la siguiente.
+  explicacion: ca[MA TE]jida esconde MATE.
+  autor: Cátedra
+  activo: true
+  en_fuente: true

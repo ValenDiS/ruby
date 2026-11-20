@@ -23,3 +23,6 @@ end
 { "facil" => 1, "medio" => 2, "avanzado" => 3 }.each do |dificultad, valor|
   MultiplicadorDificultad.find_or_create_by!(dificultad: dificultad) { |multiplicador| multiplicador.valor = valor }
 end
+
+# Catálogo de crípticos: se trae de la API con el mismo sincronizador que usa el admin.
+load Rails.root.join("db/seeds/cripticos.rb")
