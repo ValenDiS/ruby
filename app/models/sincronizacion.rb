@@ -2,10 +2,8 @@
 class Sincronizacion < ApplicationRecord
   ESTADOS = %w[exitosa sin_cambios fallida].freeze
 
-  # Admin que hizo la sincronización. Cuando se mergee el modelo User (issue 5)
-  # se puede agregar:
-  #   belongs_to :user, optional: true
-  # Mientras tanto guardamos solo el id.
+  # Admin que hizo la sincronización. Es opcional porque la carga inicial (db:seed) la hace el sistema.
+  belongs_to :user, optional: true
 
   enum :estado, ESTADOS.index_by(&:itself), validate: true
 

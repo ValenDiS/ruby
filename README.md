@@ -66,7 +66,9 @@ La URL que se usa, en orden de prioridad:
 
 1. El argumento de la tarea rake.
 2. La variable de entorno `CRIPTICOS_URL`.
-3. Por defecto, `https://ecorrons.github.io/cryptics-api/v1/cryptics.json`.
+3. La URL guardada en el admin, en *Configuración*. Por defecto, `https://ecorrons.github.io/cryptics-api/v1/cryptics.json`.
+
+Desde el admin, *Sincronización* tiene el botón «Sincronizar ahora», el historial y el informe de cada sincronización.
 
 `db:seed` necesita internet porque va a la API real. Para trabajar sin conexión:
 1. Clonar `cryptics-api`.

@@ -15,7 +15,6 @@ require "net/http"
 #   5. Los que ya no vienen no se borran: se desactivan (en_fuente = false).
 #   6. Cada sincronización queda registrada (modelo Sincronizacion).
 class SincronizadorDeCripticos
-  URL_POR_DEFECTO = "https://ecorrons.github.io/cryptics-api/v1/cryptics.json".freeze
   TIMEOUT = 10 # segundos
   MAX_REDIRECCIONES = 3 # por ej. http:// → https:// en GitHub Pages
 
@@ -27,9 +26,9 @@ class SincronizadorDeCripticos
     IOError, OpenSSL::SSL::SSLError, Net::HTTPBadResponse, Net::ProtocolError
   ].freeze
 
-  # Cuando exista la configuración del admin (issue 5), cambiar por la URL guardada ahí.
+  # La variable de entorno pisa la URL guardada en la configuración del admin.
   def self.url_configurada
-    ENV["CRIPTICOS_URL"].presence || URL_POR_DEFECTO
+    ENV["CRIPTICOS_URL"].presence || Configuracion.actual.url_fuente
   end
 
   def self.call(...)

@@ -137,10 +137,10 @@ class SincronizadorDeCripticosTest < ActiveSupport::TestCase
   end
 
   test "registra el usuario que la hizo" do
-    admin = Struct.new(:id).new(7)
+    admin = users(:admin)
     sinc = SincronizadorDeCripticos.new(url: URL, usuario: admin, cliente_http: cliente_con("cryptics.json")).call
 
-    assert_equal 7, sinc.user_id
+    assert_equal admin, sinc.user
   end
 
   # ---------- Descarga real por HTTP (servidor local, sin internet) ----------

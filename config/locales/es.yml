@@ -70,3 +70,8 @@ es:
       jugable: Activo
       desactivado: Desactivado
       fuera_de_fuente: Fuera de la fuente
+  sincronizaciones:
+    estados:
+      exitosa: Exitosa
+      sin_cambios: Sin cambios
+      fallida: Fallida

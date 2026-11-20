@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_17_042305) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_20_125201) do
   create_table "configuraciones", force: :cascade do |t|
     t.string "url_fuente", default: "https://ecorrons.github.io/cryptics-api/v1/cryptics.json", null: false
     t.text "texto_bienvenida", default: "¡Bienvenido a Rubípticos! Elegí una dificultad y resolvé crípticos.", null: false
@@ -106,4 +106,5 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_17_042305) do
   end
 
   add_foreign_key "sessions", "users"
+  add_foreign_key "sincronizaciones", "users"
 end
