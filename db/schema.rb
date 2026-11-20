@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_20_125201) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_20_181253) do
   create_table "configuraciones", force: :cascade do |t|
     t.string "url_fuente", default: "https://ecorrons.github.io/cryptics-api/v1/cryptics.json", null: false
     t.text "texto_bienvenida", default: "¡Bienvenido a Rubípticos! Elegí una dificultad y resolvé crípticos.", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "tabla_reiniciada_at"
     t.check_constraint "id = 1", name: "configuraciones_fila_unica"
   end
 
@@ -44,6 +45,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_20_125201) do
     t.check_constraint "length(trim(enunciado)) > 0", name: "cripticos_enunciado_no_vacio"
     t.check_constraint "length(trim(respuesta)) > 0", name: "cripticos_respuesta_no_vacia"
     t.check_constraint "tipo IN ('anagrama', 'oculta', 'charada', 'contenedor', 'inversion', 'supresion', 'homofono', 'doble_definicion', 'iniciales', 'finales', 'sustitucion', 'simbolos', 'combinada')", name: "cripticos_tipo_valido"
+  end
+
+  create_table "jugadores", force: :cascade do |t|
+    t.string "nombre", null: false, collation: "NOCASE"
+    t.string "token", null: false
+    t.boolean "bloqueado", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["nombre"], name: "index_jugadores_on_nombre", unique: true
+    t.index ["token"], name: "index_jugadores_on_token", unique: true
   end
 
   create_table "multiplicadores_dificultad", force: :cascade do |t|

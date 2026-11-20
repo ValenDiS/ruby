@@ -9,6 +9,9 @@ Rails.application.routes.draw do
     resource :configuracion, only: %i[ edit update ]
     resources :cripticos, only: %i[ index update ]
     resources :sincronizaciones, only: %i[ index show create ]
+    resources :jugadores, only: %i[ index update ] do
+      post :reiniciar_tabla, on: :collection
+    end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

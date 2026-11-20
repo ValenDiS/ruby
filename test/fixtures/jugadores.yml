@@ -1,0 +1,8 @@
+pedrito:
+  nombre: Pedrito
+  token: token-pedrito
+
+ofensivo:
+  nombre: NombreFeo
+  token: token-ofensivo
+  bloqueado: true

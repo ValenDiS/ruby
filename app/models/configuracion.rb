@@ -5,4 +5,10 @@ class Configuracion < ApplicationRecord
   def self.actual
     find_or_create_by!(id: 1)
   end
+
+  # La tabla de posiciones solo cuenta las partidas resueltas después de esta fecha.
+  # No se borra nada: el historial de cada jugador se conserva.
+  def reiniciar_tabla!
+    update!(tabla_reiniciada_at: Time.current)
+  end
 end
