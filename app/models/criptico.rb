@@ -14,6 +14,23 @@ class Criptico < ApplicationRecord
   scope :jugables, -> { where(activo: true, en_fuente: true) }
   scope :fuera_de_fuente, -> { where(en_fuente: false) }
 
+  ESTADOS_FILTRO = %w[jugable desactivado fuera_de_fuente].freeze
+
+  # Filtros del listado del admin. Los filtros vacíos se ignoran.
+  def self.filtrar(dificultad: nil, tipo: nil, estado: nil, origen: nil)
+    cripticos = all
+    cripticos = cripticos.where(dificultad: dificultad) if dificultad.present?
+    cripticos = cripticos.where(tipo: tipo) if tipo.present?
+    cripticos = cripticos.where(origen: origen) if origen.present?
+
+    case estado
+    when "jugable" then cripticos.jugables
+    when "desactivado" then cripticos.where(activo: false)
+    when "fuera_de_fuente" then cripticos.fuera_de_fuente
+    else cripticos
+    end
+  end
+
   validates :id_fuente, presence: true, uniqueness: true
   validates :enunciado, :respuesta, :enumeracion, presence: true
   validates :tipo, :dificultad, presence: true

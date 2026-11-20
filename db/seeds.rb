@@ -16,7 +16,7 @@ puts "Admin: #{admin_email}"
 Configuracion.actual
 
 # Valores iniciales del puntaje: 100 puntos por tipo y multiplicadores 1, 2 y 3.
-PuntajePorTipo::TIPOS.each do |tipo|
+Criptico::TIPOS.each do |tipo|
   PuntajePorTipo.find_or_create_by!(tipo: tipo) { |puntaje| puntaje.puntos = 100 }
 end
 

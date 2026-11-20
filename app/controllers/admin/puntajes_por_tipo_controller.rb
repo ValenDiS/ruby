@@ -4,7 +4,7 @@ class Admin::PuntajesPorTipoController < Admin::BaseController
   # Muestra en una sola pantalla los puntos por tipo y los multiplicadores por dificultad.
   def index
     @puntajes = PuntajePorTipo.order(:tipo)
-    @multiplicadores = MultiplicadorDificultad.all.sort_by { |m| MultiplicadorDificultad::DIFICULTADES.index(m.dificultad) }
+    @multiplicadores = MultiplicadorDificultad.all.sort_by { |m| Criptico::DIFICULTADES.index(m.dificultad) }
   end
 
   def update

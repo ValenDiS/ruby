@@ -66,3 +66,7 @@ es:
       facil: Fácil
       medio: Medio
       avanzado: Avanzado
+    estados:
+      jugable: Activo
+      desactivado: Desactivado
+      fuera_de_fuente: Fuera de la fuente
