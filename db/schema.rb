@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_15_200100) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_20_210000) do
   create_table "cripticos", force: :cascade do |t|
     t.boolean "activo", default: true, null: false
     t.string "autor"
@@ -38,6 +38,25 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_15_200100) do
     t.check_constraint "tipo IN ('anagrama', 'oculta', 'charada', 'contenedor', 'inversion', 'supresion', 'homofono', 'doble_definicion', 'iniciales', 'finales', 'sustitucion', 'simbolos', 'combinada')", name: "cripticos_tipo_valido"
   end
 
+  create_table "nodos_chatbot", force: :cascade do |t|
+    t.string "clave", null: false
+    t.text "mensaje", null: false
+    t.text "ejemplo"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["clave"], name: "index_nodos_chatbot_on_clave", unique: true
+  end
+
+  create_table "opciones_chatbot", force: :cascade do |t|
+    t.integer "origen_id", null: false
+    t.integer "destino_id", null: false
+    t.string "texto", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["destino_id"], name: "index_opciones_chatbot_on_destino_id"
+    t.index ["origen_id", "destino_id"], name: "index_opciones_chatbot_on_origen_id_and_destino_id", unique: true
+  end
+
   create_table "sincronizaciones", force: :cascade do |t|
     t.integer "actualizados", default: 0, null: false
     t.datetime "created_at", null: false
@@ -56,4 +75,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_15_200100) do
     t.check_constraint "creados >= 0 AND actualizados >= 0 AND desactivados >= 0 AND rechazados >= 0", name: "sincronizaciones_contadores_no_negativos"
     t.check_constraint "estado IN ('exitosa', 'sin_cambios', 'fallida')", name: "sincronizaciones_estado_valido"
   end
+
+  add_foreign_key "opciones_chatbot", "nodos_chatbot", column: "destino_id"
+  add_foreign_key "opciones_chatbot", "nodos_chatbot", column: "origen_id"
 end

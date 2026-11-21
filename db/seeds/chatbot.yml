@@ -1,0 +1,101 @@
+bienvenida:
+  mensaje: "¡Bienvenido a Rubípticos! ¿Qué querés aprender?"
+  opciones:
+    que_es: "¿Qué es un críptico?"
+    partes: "Las partes del enunciado"
+    tipos: "Los tipos de crípticos"
+    pistas: "¿Cómo uso las pistas?"
+    puntaje: "¿Cómo sumo puntos?"
+    rachas: "¿Cómo mantengo mi racha?"
+
+que_es:
+  mensaje: "Un críptico te lleva a una palabra por dos caminos. Una parte te dice qué significa y otra te indica cómo armarla. Sabés que lo resolviste cuando ambas te dan la misma respuesta."
+  opciones:
+    partes: "Reconocer las partes"
+
+partes:
+  mensaje: "Buscá la definición en un extremo de la frase. El indicador te dice qué operación hacer y el material aporta las letras o palabras. El número entre paréntesis indica cuántas letras tiene la respuesta."
+  opciones:
+    tipos: "Ver las operaciones con ejemplos"
+
+tipos:
+  mensaje: "¿Qué juego de palabras querés probar?"
+  opciones:
+    anagrama: "Anagrama"
+    oculta: "Oculta"
+    charada: "Charada"
+    contenedor: "Contenedor"
+    inversion: "Inversión"
+    supresion: "Supresión"
+    homofono: "Homófono"
+    doble_definicion: "Doble definición"
+    iniciales: "Iniciales"
+    finales: "Finales"
+    sustitucion: "Sustitución"
+    simbolos: "Símbolos"
+    combinada: "Combinada"
+
+anagrama:
+  mensaje: "Reordená todas las letras del material. Palabras como «revuelto» te avisan que hay que mezclarlas."
+  ejemplo: "«Saco revuelto da desorden (4)». Con las cuatro letras de SACO podés formar CAOS."
+
+oculta:
+  mensaje: "Leé el material de corrido. La respuesta puede empezar en una palabra y terminar en la siguiente."
+  ejemplo: "«El mapa nuevo esconde un alimento (3)». En maPA Nuevo se lee PAN."
+
+charada:
+  mensaje: "Resolvé cada pieza por separado y después unilas en el orden del enunciado."
+  ejemplo: "«Rostro con una hortaliza da un molusco (7)». CARA seguida de COL forma CARACOL."
+
+contenedor:
+  mensaje: "Meté las letras de una pieza dentro de otra."
+  ejemplo: "«La ele dentro del pato da una pieza de vajilla (5)». Poné L entre la P y la A de PATO y leés PLATO."
+
+inversion:
+  mensaje: "Leé el material de derecha a izquierda."
+  ejemplo: "«El sol de vuelta da un artículo (3)». SOL al revés se lee LOS."
+
+supresion:
+  mensaje: "Quitá la letra que indique el enunciado. «Sin cabeza» pide sacar la primera y «sin cola», la última."
+  ejemplo: "«Clavo sin cabeza: limpio con agua (4)». Si le sacás la C a CLAVO, queda LAVO."
+
+homofono:
+  mensaje: "Decí la pista en voz alta. Buscá otra palabra que suene igual y encaje con la definición."
+  ejemplo: "«Suena como un tubo: fue dueño de algo (4)». TUBO y TUVO suenan igual. La definición pide TUVO."
+
+doble_definicion:
+  mensaje: "Buscá una misma palabra con dos significados. Cada parte del enunciado define uno."
+  ejemplo: "«Lengua de fuego o pariente de la alpaca (5)». A las dos se las llama LLAMA."
+
+iniciales:
+  mensaje: "Tomá la primera letra de cada palabra indicada y leelas en orden."
+  ejemplo: "«Al principio, cada isla tiene arena: encuentro acordado (4)». Las iniciales de Cada Isla Tiene Arena forman CITA."
+
+finales:
+  mensaje: "Tomá la última letra de cada palabra indicada y leelas en orden."
+  ejemplo: "«Los finales de taller, nave y pared forman una malla (3)». De talleR, navE y pareD sale RED."
+
+sustitucion:
+  mensaje: "Cambiá la letra indicada por otra y conservá las demás."
+  ejemplo: "«Roca con be en la cabeza: abertura por donde comés (4)». Reemplazá la R de ROCA por B y obtenés BOCA."
+
+simbolos:
+  mensaje: "Traducí las pistas a símbolos conocidos, como los de elementos químicos o puntos cardinales."
+  ejemplo: "«Litio, nitrógeno y oxígeno forman una fibra textil (4)». Sus símbolos Li, N y O forman LINO."
+
+combinada:
+  mensaje: "Aplicá más de una operación. El resultado de la primera te da material para la siguiente."
+  ejemplo: "«Tropa sin cabeza y revuelta da una interrupción del trabajo (4)». Quitá la T de TROPA y reordená ROPA para formar PARO."
+
+pistas:
+  mensaje: "Podés pedir hasta cuatro pistas. Primero se revela el tipo, después la definición, luego el indicador y el material y por último una ayuda escrita. Cada pista resta un 20 % al factor de pistas."
+  opciones:
+    puntaje: "Ver cómo se calculan los puntos"
+
+puntaje:
+  mensaje: "El tipo y la dificultad fijan los puntos base. Si tardás más que el tiempo de referencia o pedís pistas, ganás menos puntos. Tu racha suma un bono. Un acierto vale al menos 10 puntos, rendirse da 0 y el críptico del día vale el doble."
+  opciones:
+    rachas: "Entender el bono de racha"
+
+rachas:
+  mensaje: "Tu racha cuenta los días seguidos que jugás. Varias partidas el mismo día cuentan como un día. Cada día de racha, incluido hoy, aumenta el bono de puntaje un 5 %, hasta el 50 %. Si pasás un día sin jugar, se corta la racha actual y conservás tu mejor marca."
