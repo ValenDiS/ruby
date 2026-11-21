@@ -1,0 +1,15 @@
+<% if nodo %>
+  <div data-chatbot-clave="<%= nodo.clave %>">
+    <p tabindex="-1" data-chatbot-mensaje><%= nodo.mensaje %></p>
+    <% if (ejemplo = nodo.ejemplo_visible) %>
+      <p class="border-start border-3 ps-3"><%= ejemplo %></p>
+    <% end %>
+    <ul class="list-unstyled d-grid gap-2">
+      <% nodo.opciones.each do |opcion| %>
+        <li><%= link_to opcion.texto, chatbot_path(nodo: opcion.destino.clave), class: "btn btn-outline-primary text-start" %></li>
+      <% end %>
+    </ul>
+  </div>
+<% else %>
+  <p>La guía todavía no está disponible.</p>
+<% end %>

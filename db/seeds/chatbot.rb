@@ -3,15 +3,13 @@ NodoChatbot.transaction do
   next if NodoChatbot.exists?(clave: "bienvenida")
 
   temas = YAML.safe_load_file(Rails.root.join("db/seeds/chatbot.yml"))
-  enunciados_activos = Criptico.where(activo: true).pluck(:enunciado).map { |texto| NormalizadorDeTexto.normalizar(texto) }
+  enunciados_activos = NodoChatbot.enunciados_activos
 
   nodos = temas.to_h do |clave, tema|
-    ejemplo = tema["ejemplo"]
-    if ejemplo
-      texto = NormalizadorDeTexto.normalizar(ejemplo)
-      ejemplo = nil if enunciados_activos.any? { |enunciado| texto.include?(enunciado) }
-    end
-    [ clave, NodoChatbot.create!(clave: clave, mensaje: tema.fetch("mensaje"), ejemplo: ejemplo) ]
+    nodo = NodoChatbot.new(clave: clave, mensaje: tema.fetch("mensaje"), ejemplo: tema["ejemplo"])
+    nodo.ejemplo = nodo.ejemplo_visible(enunciados_activos)
+    nodo.save!
+    [ clave, nodo ]
   end
 
   temas.each do |clave, tema|

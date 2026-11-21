@@ -1,2 +1,13 @@
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
+
+.chatbot-panel {
+  width: min(28rem, calc(100% - 2rem));
+  max-height: 85dvh;
+  margin: auto 1rem 1rem auto;
+  border: 1px solid var(--bs-border-color);
+}
+
+.chatbot-panel::backdrop {
+  background: rgb(0 0 0 / 35%);
+}

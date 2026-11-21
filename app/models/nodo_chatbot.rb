@@ -6,4 +6,15 @@ class NodoChatbot < ApplicationRecord
 
   validates :clave, presence: true, uniqueness: true
   validates :mensaje, presence: true
+
+  def self.enunciados_activos
+    Criptico.where(activo: true).pluck(:enunciado).map { |texto| NormalizadorDeTexto.normalizar(texto) }
+  end
+
+  def ejemplo_visible(enunciados = nil)
+    return if ejemplo.blank?
+
+    texto = NormalizadorDeTexto.normalizar(ejemplo)
+    ejemplo unless (enunciados || self.class.enunciados_activos).any? { |enunciado| texto.include?(enunciado) }
+  end
 end
