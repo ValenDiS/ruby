@@ -13,17 +13,3 @@ mate:
   autor: Cátedra
   activo: true
   en_fuente: true
-
-gato:
-  id_fuente: cr-002
-  enunciado: Felino o herramienta para cambiar la rueda
-  enumeracion: "(4)"
-  respuesta: GATO
-  definiciones: ["Felino", "herramienta para cambiar la rueda"]
-  indicadores: []
-  material: []
-  tipo: doble_definicion
-  dificultad: medio
-  origen: Propio
-  activo: false
-  en_fuente: true

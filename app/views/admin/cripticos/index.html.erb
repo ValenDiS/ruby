@@ -10,7 +10,7 @@
                     { include_blank: "Todos los tipos", selected: @filtros[:tipo] }, class: "form-select" %>
   </div>
   <div class="col-6 col-md">
-    <%= form.select :estado, Criptico::ESTADOS_FILTRO.map { |e| [ t("cripticos.estados.#{e}"), e ] },
+    <%= form.select :estado, FiltroDeCripticos::ESTADOS.map { |e| [ t("cripticos.estados.#{e}"), e ] },
                     { include_blank: "Todos los estados", selected: @filtros[:estado] }, class: "form-select" %>
   </div>
   <div class="col-6 col-md">

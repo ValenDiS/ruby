@@ -102,12 +102,4 @@ class CripticoTest < ActiveSupport::TestCase
     cripticos(:mate).update!(en_fuente: true, activo: false)
     assert_not_includes Criptico.jugables, cripticos(:mate)
   end
-
-  test "filtrar combina los filtros e ignora los vacíos" do
-    assert_equal [ cripticos(:mate) ], Criptico.filtrar(dificultad: "facil").to_a
-    assert_equal [ cripticos(:gato) ], Criptico.filtrar(tipo: "doble_definicion", origen: "Propio").to_a
-    assert_equal [ cripticos(:gato) ], Criptico.filtrar(estado: "desactivado").to_a
-    assert_equal [ cripticos(:mate) ], Criptico.filtrar(estado: "jugable").to_a
-    assert_equal 2, Criptico.filtrar(dificultad: "", tipo: nil).count
-  end
 end

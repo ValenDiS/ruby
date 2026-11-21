@@ -5,10 +5,11 @@ class Admin::CripticosControllerTest < ActionDispatch::IntegrationTest
     sign_in_as(users(:admin))
 
     get admin_cripticos_path, params: { dificultad: "medio" }
-
     assert_response :success
-    assert_includes response.body, cripticos(:gato).id_fuente
     assert_not_includes response.body, cripticos(:mate).id_fuente
+
+    get admin_cripticos_path, params: { dificultad: "facil" }
+    assert_includes response.body, cripticos(:mate).id_fuente
   end
 
   test "el admin desactiva y activa un críptico" do

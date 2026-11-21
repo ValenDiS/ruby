@@ -1,7 +1,7 @@
 class Admin::CripticosController < Admin::BaseController
   def index
     @filtros = params.permit(:dificultad, :tipo, :estado, :origen)
-    @cripticos = Criptico.filtrar(**@filtros.to_h.symbolize_keys).order(:id_fuente)
+    @cripticos = FiltroDeCripticos.new(**@filtros.to_h.symbolize_keys).call.order(:id_fuente)
     @origenes = Criptico.distinct.order(:origen).pluck(:origen).compact
   end
 
