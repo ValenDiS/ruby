@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
   <head>
     <title><%= content_for(:title) || "Rubipticos" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -24,6 +24,7 @@
   </head>
 
   <body>
+    <%= render "shared/chatbot" %>
     <%= yield %>
   </body>
 </html>
