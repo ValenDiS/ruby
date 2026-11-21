@@ -10,4 +10,5 @@ ActiveSupport::Inflector.inflections(:en) do |inflect|
   inflect.irregular "configuracion", "configuraciones"
   inflect.irregular "sincronizacion", "sincronizaciones"
   inflect.irregular "nodo_chatbot", "nodos_chatbot"
+  inflect.irregular "opcion_chatbot", "opciones_chatbot"
 end

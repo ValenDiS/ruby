@@ -10,3 +10,4 @@
 
 # Catálogo de crípticos: se trae de la API con el mismo sincronizador que usa el admin.
 load Rails.root.join("db/seeds/cripticos.rb")
+load Rails.root.join("db/seeds/chatbot.rb")
