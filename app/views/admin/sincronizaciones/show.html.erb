@@ -5,7 +5,7 @@
   <dd class="col-sm-9"><%= l(@sincronizacion.fecha, format: :long) %></dd>
 
   <dt class="col-sm-3">Hecha por</dt>
-  <dd class="col-sm-9"><%= @sincronizacion.user&.email_address || "Sistema" %></dd>
+  <dd class="col-sm-9"><%= @usuario&.email_address || "Sistema" %></dd>
 
   <dt class="col-sm-3">Fuente</dt>
   <dd class="col-sm-9 text-break"><%= @sincronizacion.url %></dd>

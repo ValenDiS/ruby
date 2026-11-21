@@ -138,5 +138,4 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_20_210000) do
   add_foreign_key "opciones_chatbot", "nodos_chatbot", column: "destino_id"
   add_foreign_key "opciones_chatbot", "nodos_chatbot", column: "origen_id"
   add_foreign_key "sessions", "users"
-  add_foreign_key "sincronizaciones", "users"
 end

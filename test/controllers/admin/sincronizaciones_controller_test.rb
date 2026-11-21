@@ -3,7 +3,7 @@ require "test_helper"
 class Admin::SincronizacionesControllerTest < ActionDispatch::IntegrationTest
   test "el admin ve el historial y el informe con los rechazados" do
     sincronizacion = Sincronizacion.create!(url: "https://ejemplo.test/v1/cryptics.json", estado: "exitosa",
-                                            version: "1", creados: 1, rechazados: 1, user: users(:admin),
+                                            version: "1", creados: 1, rechazados: 1, user_id: users(:admin).id,
                                             detalle_rechazados: [ { "id" => "cr-104", "motivo" => "Respuesta no puede estar en blanco" } ])
     sign_in_as(users(:admin))
 
@@ -25,7 +25,8 @@ class Admin::SincronizacionesControllerTest < ActionDispatch::IntegrationTest
 
     sincronizacion = Sincronizacion.last
     assert sincronizacion.fallida?
-    assert_equal users(:admin), sincronizacion.user
+    assert_equal users(:admin).id, sincronizacion.user_id
+    assert_equal "http://127.0.0.1:1/v1/cryptics.json", sincronizacion.url
     assert_redirected_to admin_sincronizacion_path(sincronizacion)
   end
 
