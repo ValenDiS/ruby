@@ -3,6 +3,9 @@
 class Jugador < ApplicationRecord
   has_secure_token :token
 
+  # El historial queda aunque el jugador ya no se use («empezar como otro jugador»).
+  has_many :partidas, dependent: :restrict_with_error
+
   validates :nombre, presence: true, length: { in: 3..20 }, uniqueness: { case_sensitive: false },
                      format: { with: /\A\S(.*\S)?\z/, message: "no puede empezar ni terminar con espacios" }
   validates :bloqueado, inclusion: { in: [ true, false ] }

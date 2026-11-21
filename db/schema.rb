@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_20_210000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_21_233331) do
   create_table "configuraciones", force: :cascade do |t|
     t.string "url_fuente", default: "https://ecorrons.github.io/cryptics-api/v1/cryptics.json", null: false
     t.text "texto_bienvenida", default: "¡Bienvenido a Rubípticos! Elegí una dificultad y resolvé crípticos.", null: false
@@ -86,6 +86,27 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_20_210000) do
     t.index ["origen_id", "destino_id"], name: "index_opciones_chatbot_on_origen_id_and_destino_id", unique: true
   end
 
+  create_table "partidas", force: :cascade do |t|
+    t.integer "jugador_id", null: false
+    t.integer "criptico_id", null: false
+    t.datetime "iniciado_at"
+    t.datetime "resuelto_at"
+    t.datetime "rendido_at"
+    t.integer "intentos", default: 0, null: false
+    t.integer "pistas_usadas", default: 0, null: false
+    t.integer "puntos"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["criptico_id"], name: "index_partidas_on_criptico_id"
+    t.index ["jugador_id", "criptico_id"], name: "index_partidas_on_jugador_id_and_criptico_id", unique: true
+    t.index ["jugador_id"], name: "index_partidas_on_jugador_id"
+    t.check_constraint "(resuelto_at IS NULL AND rendido_at IS NULL) OR iniciado_at IS NOT NULL", name: "partidas_terminada_tiene_inicio"
+    t.check_constraint "intentos BETWEEN 0 AND 5", name: "partidas_intentos_validos"
+    t.check_constraint "pistas_usadas BETWEEN 0 AND 4", name: "partidas_pistas_validas"
+    t.check_constraint "puntos IS NULL OR puntos >= 0", name: "partidas_puntos_no_negativos"
+    t.check_constraint "resuelto_at IS NULL OR rendido_at IS NULL", name: "partidas_resuelta_o_rendida"
+  end
+
   create_table "puntajes_por_tipo", force: :cascade do |t|
     t.string "tipo", null: false
     t.integer "puntos", default: 100, null: false
@@ -137,5 +158,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_20_210000) do
 
   add_foreign_key "opciones_chatbot", "nodos_chatbot", column: "destino_id"
   add_foreign_key "opciones_chatbot", "nodos_chatbot", column: "origen_id"
+  add_foreign_key "partidas", "cripticos"
+  add_foreign_key "partidas", "jugadores"
   add_foreign_key "sessions", "users"
 end

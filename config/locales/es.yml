@@ -47,6 +47,15 @@ es:
       jugador:
         nombre: Nombre
         bloqueado: Bloqueado
+      partida:
+        jugador: Jugador
+        criptico: Críptico
+        iniciado_at: Inicio
+        resuelto_at: Resuelta
+        rendido_at: Rendida
+        intentos: Intentos
+        pistas_usadas: Pistas usadas
+        puntos: Puntos
       configuracion:
         url_fuente: URL de la fuente de crípticos
         texto_bienvenida: Texto de bienvenida

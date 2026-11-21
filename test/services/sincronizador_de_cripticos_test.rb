@@ -5,6 +5,7 @@ class SincronizadorDeCripticosTest < ActiveSupport::TestCase
   URL = "https://ejemplo.test/v1/cryptics.json".freeze
 
   setup do
+    Partida.delete_all # las partidas apuntan a los crípticos
     Criptico.delete_all # arrancamos con la base vacía, sin fixtures
   end
 
