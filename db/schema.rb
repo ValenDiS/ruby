@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_20_181253) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_20_210000) do
   create_table "configuraciones", force: :cascade do |t|
     t.string "url_fuente", default: "https://ecorrons.github.io/cryptics-api/v1/cryptics.json", null: false
     t.text "texto_bienvenida", default: "¡Bienvenido a Rubípticos! Elegí una dificultad y resolvé crípticos.", null: false
@@ -67,6 +67,25 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_20_181253) do
     t.check_constraint "valor > 0 AND valor <= 5", name: "multiplicadores_dificultad_valor_valido"
   end
 
+  create_table "nodos_chatbot", force: :cascade do |t|
+    t.string "clave", null: false
+    t.text "mensaje", null: false
+    t.text "ejemplo"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["clave"], name: "index_nodos_chatbot_on_clave", unique: true
+  end
+
+  create_table "opciones_chatbot", force: :cascade do |t|
+    t.integer "origen_id", null: false
+    t.integer "destino_id", null: false
+    t.string "texto", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["destino_id"], name: "index_opciones_chatbot_on_destino_id"
+    t.index ["origen_id", "destino_id"], name: "index_opciones_chatbot_on_origen_id_and_destino_id", unique: true
+  end
+
   create_table "puntajes_por_tipo", force: :cascade do |t|
     t.string "tipo", null: false
     t.integer "puntos", default: 100, null: false
@@ -116,6 +135,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_20_181253) do
     t.check_constraint "rol IN ('admin', 'editor_puntajes')", name: "users_rol_valido"
   end
 
+  add_foreign_key "opciones_chatbot", "nodos_chatbot", column: "destino_id"
+  add_foreign_key "opciones_chatbot", "nodos_chatbot", column: "origen_id"
   add_foreign_key "sessions", "users"
   add_foreign_key "sincronizaciones", "users"
 end
