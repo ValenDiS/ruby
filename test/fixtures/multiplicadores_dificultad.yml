@@ -5,3 +5,7 @@ facil:
 medio:
   dificultad: medio
   valor: 2
+
+avanzado:
+  dificultad: avanzado
+  valor: 3

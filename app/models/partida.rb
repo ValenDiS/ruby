@@ -32,6 +32,13 @@ class Partida < ApplicationRecord
     resuelta? || rendida?
   end
 
+  # Tiempo oficial: lo calcula el servidor con los dos timestamps, nunca el navegador.
+  def segundos_jugados
+    return unless iniciada? && resuelta?
+
+    (resuelto_at - iniciado_at).round
+  end
+
   private
     def no_puede_estar_resuelta_y_rendida
       errors.add(:base, "Una partida no puede estar resuelta y rendida a la vez.") if resuelta? && rendida?

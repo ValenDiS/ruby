@@ -57,6 +57,14 @@ class PartidaTest < ActiveSupport::TestCase
     assert_includes @nueva.errors.attribute_names, :iniciado_at
   end
 
+  test "los segundos jugados salen de los timestamps de inicio y resolución" do
+    @nueva.iniciado_at = Time.current
+    assert_nil @nueva.segundos_jugados
+
+    @nueva.resuelto_at = @nueva.iniciado_at + 95.seconds
+    assert_equal 95, @nueva.segundos_jugados
+  end
+
   test "scopes por estado" do
     assert_includes Partida.resueltas, partidas(:resuelta)
     assert_includes Partida.rendidas, partidas(:rendida)
