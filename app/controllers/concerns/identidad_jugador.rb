@@ -6,6 +6,10 @@ module IdentidadJugador
   end
 
   private
+    def requerir_jugador
+      redirect_to new_jugador_path, status: :see_other unless jugador_actual
+    end
+
     def jugador_actual
       return @jugador_actual if defined?(@jugador_actual)
 

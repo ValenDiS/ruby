@@ -35,8 +35,33 @@ bin/rails test test/models/jugador_test.rb test/services/registro_de_jugador_tes
 ```
 
 En PowerShell se pueden ejecutar los comandos Rails como `ruby bin\rails ...`.
-El cambio de nombre, la nueva identidad y el flujo de partidas se incorporan en los
-siguientes bloques de issue 2.
+
+## Gestión de identidad (issue 2, bloque 2)
+
+Desde el inicio, **Cambiar nombre** actualiza el jugador identificado por la cookie.
+Se conservan su ID, su token y los datos asociados a ese ID. El cliente solo puede enviar
+el nombre: no puede elegir otro jugador, cambiar tokens ni quitar bloqueos administrativos.
+Las reglas y sugerencias son las mismas que en el alta, centralizadas en `AsignacionDeNombre`.
+Un cambio de nombre no quita un bloqueo; esa decisión sigue correspondiendo al administrador.
+
+**Empezar como otro jugador** abre una pantalla con un aviso y una confirmación obligatoria,
+validada también en el servidor. Abrirla o cancelarla no cambia nada. Si el nombre nuevo no
+es válido, el jugador anterior sigue accesible. La confirmación corresponde al jugador
+mostrado en el aviso: una pestaña anterior no puede retirar por accidente una identidad nueva.
+Al confirmar con un nombre disponible,
+`CambioDeJugador` crea el nuevo jugador y retira el token anterior dentro de una transacción.
+La cookie se reemplaza por la identidad nueva. El registro anterior no se elimina: su
+historial sigue asociado al mismo ID y puede seguir contando en el ranking.
+Las copias de su cookie anterior dejan de dar acceso; no existe recuperación por nombre.
+
+El resultado de guardar un nombre indica explícitamente si se guardó: un jugador ya
+persistido puede tener errores al intentar renombrarse. Los formularios comparten los
+campos, errores y sugerencias mediante un parcial, sin duplicar sus reglas.
+Este bloque no requiere migraciones nuevas ni implementa todavía el flujo de partidas.
+
+```bash
+bin/rails test test/services/asignacion_de_nombre_test.rb test/services/cambio_de_jugador_test.rb test/integration/gestion_de_jugador_test.rb
+```
 
 ## Catálogo de crípticos y sincronización
 

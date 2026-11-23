@@ -3,7 +3,8 @@ Rails.application.routes.draw do
   get "como-se-juega", to: "chatbot#show", as: :chatbot
 
   scope module: :publico do
-    resource :jugador, only: %i[ new create ]
+    resource :jugador, only: %i[ new create edit update ]
+    resource :cambio_de_jugador, only: %i[ new create ], controller: "cambios_de_jugador"
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
