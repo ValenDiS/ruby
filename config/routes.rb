@@ -5,6 +5,9 @@ Rails.application.routes.draw do
   scope module: :publico do
     resource :jugador, only: %i[ new create edit update ]
     resource :cambio_de_jugador, only: %i[ new create ], controller: "cambios_de_jugador"
+    resources :partidas, only: %i[ new create show ] do
+      post :iniciar, on: :member
+    end
   end
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

@@ -1,0 +1,39 @@
+<% content_for :title, "Jugar | Rubípticos" %>
+<% content_for :head do %>
+  <meta name="turbo-cache-control" content="no-cache">
+<% end %>
+
+<main class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-8">
+      <p class="text-body-secondary">Dificultad: <%= t("juego.dificultades.#{@partida.criptico.dificultad}") %></p>
+
+      <% if @partida.terminada? %>
+        <h1><%= @partida.resuelta? ? "Partida resuelta" : "Te rendiste" %></h1>
+        <p><%= @partida.criptico.enunciado %> <%= @partida.criptico.enumeracion %></p>
+        <p>Respuesta: <strong><%= @partida.criptico.respuesta %></strong></p>
+        <p><%= @partida.criptico.explicacion %></p>
+        <% unless @partida.puntos.nil? %>
+          <p>Puntos: <%= @partida.puntos %></p>
+        <% end %>
+        <%= link_to "Elegir otro críptico", new_partida_path, class: "btn btn-primary" %>
+      <% elsif @partida.iniciada? %>
+        <h1>Resolvé el críptico</h1>
+        <p class="fs-4" id="enunciado-criptico"><%= @partida.criptico.enunciado %> <%= @partida.criptico.enumeracion %></p>
+
+        <% segundos = @partida.segundos_transcurridos %>
+        <div data-controller="cronometro" data-cronometro-transcurrido-value="<%= segundos %>">
+          <p>Tiempo transcurrido: <span data-cronometro-target="reloj"><%= formatear_tiempo(segundos) %></span></p>
+        </div>
+        <p class="text-body-secondary">El tiempo sigue corriendo aunque cierres esta pestaña.</p>
+      <% else %>
+        <h1>Tu próximo críptico</h1>
+        <p>Cuando estés listo, presioná Jugar. Ahí empieza el tiempo y vas a ver el enunciado.</p>
+        <%= button_to "Jugar", iniciar_partida_path(@partida), class: "btn btn-primary btn-lg",
+                      data: { turbo_submits_with: "Iniciando…" } %>
+      <% end %>
+
+      <p class="mt-4"><%= link_to "Volver al inicio", root_path %></p>
+    </div>
+  </div>
+</main>

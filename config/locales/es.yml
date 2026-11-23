@@ -1,4 +1,12 @@
 es:
+  juego:
+    dificultades:
+      facil: Fácil
+      medio: Medio
+      avanzado: Avanzado
+    errores:
+      dificultad_invalida: Elegí una dificultad válida.
+      sin_disponibles: No hay crípticos disponibles para esa dificultad. Probá con otra.
   activerecord:
     models:
       criptico:

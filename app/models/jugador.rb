@@ -18,6 +18,10 @@ class Jugador < ApplicationRecord
     nombre.to_s.unicode_normalize(:nfc).downcase
   end
 
+  def partida_abierta
+    partidas.en_curso.order(:created_at, :id).first
+  end
+
   # TODO issue 3: suma de los puntos de las partidas resueltas.
   def puntos_totales
     0

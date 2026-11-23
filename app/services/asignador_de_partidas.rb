@@ -27,7 +27,7 @@ class AsignadorDePartidas
       return resultado(:identidad_retirada) unless @jugador.token == @token
       return resultado(:jugador_bloqueado) if @jugador.bloqueado?
 
-      abierta = @jugador.partidas.en_curso.order(:created_at, :id).first
+      abierta = @jugador.partida_abierta
       return resultado(:retomada, abierta) if abierta
 
       criptico = disponibles.order(Arel.sql("RANDOM()")).first
