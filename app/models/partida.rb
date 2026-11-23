@@ -32,6 +32,10 @@ class Partida < ApplicationRecord
     resuelta? || rendida?
   end
 
+  def intentos_restantes
+    MAXIMO_INTENTOS - intentos
+  end
+
   # Referencia para el reloj visual; el puntaje conserva su cálculo de segundos_jugados.
   def segundos_transcurridos
     return 0 unless iniciada?

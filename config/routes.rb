@@ -7,6 +7,8 @@ Rails.application.routes.draw do
     resource :cambio_de_jugador, only: %i[ new create ], controller: "cambios_de_jugador"
     resources :partidas, only: %i[ new create show ] do
       post :iniciar, on: :member
+      post :responder, on: :member
+      post :rendirse, on: :member
     end
   end
 

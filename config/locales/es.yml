@@ -7,6 +7,11 @@ es:
     errores:
       dificultad_invalida: Elegí una dificultad válida.
       sin_disponibles: No hay crípticos disponibles para esa dificultad. Probá con otra.
+      incorrecta: Esa respuesta no es correcta. Podés volver a intentarlo si te quedan intentos.
+      respuesta_invalida: Escribí una respuesta que contenga letras. No se consumió ningún intento.
+      sin_iniciar: Primero presioná Jugar para empezar la partida.
+      desactualizada: La partida cambió desde que abriste el formulario. Revisá los intentos restantes y volvé a responder.
+      puntaje_no_disponible: No pudimos finalizar la partida. Probá de nuevo más tarde. Tu intento no se consumió.
   activerecord:
     models:
       criptico:

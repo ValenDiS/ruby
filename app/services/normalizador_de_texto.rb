@@ -12,7 +12,7 @@ module NormalizadorDeTexto
   module_function
 
   def normalizar(texto)
-    texto.to_s.upcase.tr(CON_TILDE, SIN_TILDE).gsub(/[^A-ZÑ]/, "")
+    texto.to_s.unicode_normalize(:nfc).upcase.tr(CON_TILDE, SIN_TILDE).gsub(/[^A-ZÑ]/, "")
   end
 
   # Palabras de un texto, sin signos de puntuación.
