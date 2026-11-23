@@ -87,4 +87,29 @@ class CalculadorDeRachaTest < ActiveSupport::TestCase
     assert_equal 1, racha.actual
     assert_equal 2, racha.contando_hoy
   end
+
+  test "sin partidas la mejor racha es 0" do
+    assert_equal 0, racha.mejor
+  end
+
+  test "la mejor racha se guarda aunque se haya cortado" do
+    jugar(10.days.ago)
+    jugar(9.days.ago)
+    jugar(8.days.ago)
+    jugar(1.day.ago)
+    jugar(1.hour.ago)
+
+    assert_equal 2, racha.actual
+    assert_equal 3, racha.mejor
+  end
+
+  test "si la racha actual es la más larga, también es la mejor" do
+    jugar(6.days.ago)
+    jugar(3.days.ago)
+    jugar(2.days.ago)
+    jugar(1.day.ago)
+
+    assert_equal 3, racha.actual
+    assert_equal 3, racha.mejor
+  end
 end

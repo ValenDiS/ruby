@@ -4,6 +4,7 @@
 #
 #   CalculadorDeRacha.new(jugador).actual        # => 4
 #   CalculadorDeRacha.new(jugador).contando_hoy  # => 5 (si hoy todavía no jugó)
+#   CalculadorDeRacha.new(jugador).mejor         # => 7
 class CalculadorDeRacha
   def initialize(jugador, hoy: Date.current)
     @jugador = jugador
@@ -21,6 +22,14 @@ class CalculadorDeRacha
   # así todas las partidas del mismo día tienen el mismo bonus.
   def contando_hoy
     dias_seguidos_hasta(@hoy.yesterday) + 1
+  end
+
+  # La racha más larga que tuvo el jugador, aunque ya se haya cortado.
+  # Se mide desde cada día que cierra una racha (el día siguiente no jugó).
+  def mejor
+    dias_jugados.reject { |dia| dias_jugados.include?(dia.tomorrow) }
+                .map { |ultimo_dia| dias_seguidos_hasta(ultimo_dia) }
+                .max || 0
   end
 
   private
