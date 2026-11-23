@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_20_210000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_22_120000) do
   create_table "cripticos", force: :cascade do |t|
     t.boolean "activo", default: true, null: false
     t.string "autor"
@@ -38,6 +38,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_20_210000) do
     t.check_constraint "tipo IN ('anagrama', 'oculta', 'charada', 'contenedor', 'inversion', 'supresion', 'homofono', 'doble_definicion', 'iniciales', 'finales', 'sustitucion', 'simbolos', 'combinada')", name: "cripticos_tipo_valido"
   end
 
+  create_table "jugadores", force: :cascade do |t|
+    t.string "nombre", null: false, collation: "NOCASE"
+    t.string "token", null: false
+    t.boolean "bloqueado", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "nombre_normalizado", null: false
+    t.index ["nombre"], name: "index_jugadores_on_nombre", unique: true
+    t.index ["nombre_normalizado"], name: "index_jugadores_on_nombre_normalizado", unique: true
+    t.index ["token"], name: "index_jugadores_on_token", unique: true
+  end
+
   create_table "nodos_chatbot", force: :cascade do |t|
     t.string "clave", null: false
     t.text "mensaje", null: false
@@ -55,6 +67,27 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_20_210000) do
     t.datetime "updated_at", null: false
     t.index ["destino_id"], name: "index_opciones_chatbot_on_destino_id"
     t.index ["origen_id", "destino_id"], name: "index_opciones_chatbot_on_origen_id_and_destino_id", unique: true
+  end
+
+  create_table "partidas", force: :cascade do |t|
+    t.integer "jugador_id", null: false
+    t.integer "criptico_id", null: false
+    t.datetime "iniciado_at"
+    t.datetime "resuelto_at"
+    t.datetime "rendido_at"
+    t.integer "intentos", default: 0, null: false
+    t.integer "pistas_usadas", default: 0, null: false
+    t.integer "puntos"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["criptico_id"], name: "index_partidas_on_criptico_id"
+    t.index ["jugador_id", "criptico_id"], name: "index_partidas_on_jugador_id_and_criptico_id", unique: true
+    t.index ["jugador_id"], name: "index_partidas_on_jugador_id"
+    t.check_constraint "(resuelto_at IS NULL AND rendido_at IS NULL) OR iniciado_at IS NOT NULL", name: "partidas_terminada_tiene_inicio"
+    t.check_constraint "intentos BETWEEN 0 AND 5", name: "partidas_intentos_validos"
+    t.check_constraint "pistas_usadas BETWEEN 0 AND 4", name: "partidas_pistas_validas"
+    t.check_constraint "puntos IS NULL OR puntos >= 0", name: "partidas_puntos_no_negativos"
+    t.check_constraint "resuelto_at IS NULL OR rendido_at IS NULL", name: "partidas_resuelta_o_rendida"
   end
 
   create_table "sincronizaciones", force: :cascade do |t|
@@ -78,4 +111,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_20_210000) do
 
   add_foreign_key "opciones_chatbot", "nodos_chatbot", column: "destino_id"
   add_foreign_key "opciones_chatbot", "nodos_chatbot", column: "origen_id"
+  add_foreign_key "partidas", "cripticos"
+  add_foreign_key "partidas", "jugadores"
 end

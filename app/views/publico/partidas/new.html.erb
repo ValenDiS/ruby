@@ -1,0 +1,33 @@
+<% content_for :title, "Elegir dificultad | Rubípticos" %>
+<% content_for :head do %>
+  <meta name="turbo-cache-control" content="no-cache">
+<% end %>
+
+<main class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <h1>Elegí la dificultad</h1>
+      <p>Te vamos a asignar un críptico que todavía no hayas jugado.</p>
+
+      <% if @error %>
+        <p class="alert alert-warning" role="alert"><%= @error %></p>
+      <% end %>
+
+      <%= form_with url: partidas_path do |form| %>
+        <fieldset class="mb-3">
+          <legend class="h5">Dificultad</legend>
+          <% Criptico::DIFICULTADES.each do |dificultad| %>
+            <div class="form-check mb-2">
+              <%= form.radio_button :dificultad, dificultad, required: true, class: "form-check-input" %>
+              <%= form.label :dificultad, t("juego.dificultades.#{dificultad}"),
+                             value: dificultad, class: "form-check-label" %>
+            </div>
+          <% end %>
+        </fieldset>
+        <%= form.submit "Asignar críptico", class: "btn btn-primary", data: { turbo_submits_with: "Buscando…" } %>
+      <% end %>
+
+      <%= link_to "Volver al inicio", root_path, class: "d-inline-block mt-3" %>
+    </div>
+  </div>
+</main>

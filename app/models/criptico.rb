@@ -3,6 +3,9 @@ class Criptico < ApplicationRecord
              doble_definicion iniciales finales sustitucion simbolos combinada].freeze
   DIFICULTADES = %w[facil medio avanzado].freeze
 
+  # No se borra un críptico con partidas jugadas: se desactiva.
+  has_many :partidas, dependent: :restrict_with_error
+
   # Enums guardados como texto (más legible en la base que un entero).
   # validate: true → un valor desconocido ("palindromo") es un error de
   # validación en vez de levantar ArgumentError.

@@ -1,0 +1,23 @@
+<% if jugador.errors.any? %>
+  <div class="alert alert-danger" role="alert" id="errores-jugador">
+    <p class="fw-semibold mb-2">Revisá los datos:</p>
+    <ul class="mb-0">
+      <% jugador.errors.full_messages.each do |mensaje| %>
+        <li><%= mensaje %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
+<% if sugerencia %>
+  <p role="status">Ese nombre ya está tomado. Podés probar con <strong><%= sugerencia %></strong>.</p>
+<% end %>
+
+<div class="mb-3">
+  <%= form.label :nombre, "Nombre", class: "form-label" %>
+  <%= form.text_field :nombre, class: "form-control", required: true, minlength: 3, maxlength: 20,
+                      autocomplete: "nickname", autofocus: true, aria: { describedby: "ayuda-nombre" } %>
+  <div id="ayuda-nombre" class="form-text">
+    Entre 3 y 20 caracteres, sin espacios al principio ni al final.
+  </div>
+</div>

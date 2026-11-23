@@ -1,0 +1,20 @@
+<% content_for :title, "Elegí tu nombre | Rubípticos" %>
+
+<main class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <h1>Elegí tu nombre</h1>
+      <p>Con este nombre vas a aparecer en la tabla de posiciones.</p>
+
+      <%= form_with model: @jugador, url: jugador_path do |form| %>
+        <%= render "campos_nombre", form: form, jugador: @jugador, sugerencia: @sugerencia %>
+        <%= form.submit "Guardar nombre", class: "btn btn-primary" %>
+      <% end %>
+
+      <p class="text-body-secondary mt-3">
+        Tu jugador se recuerda en este navegador. Si borrás las cookies, perdés el acceso a tu historial.
+      </p>
+      <%= link_to "Volver al inicio", root_path %>
+    </div>
+  </div>
+</main>

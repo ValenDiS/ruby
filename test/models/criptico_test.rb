@@ -102,4 +102,11 @@ class CripticoTest < ActiveSupport::TestCase
     cripticos(:mate).update!(en_fuente: true, activo: false)
     assert_not_includes Criptico.jugables, cripticos(:mate)
   end
+
+  test "no se puede borrar un críptico con partidas" do
+    criptico = cripticos(:mate)
+
+    assert_not criptico.destroy
+    assert Criptico.exists?(criptico.id)
+  end
 end

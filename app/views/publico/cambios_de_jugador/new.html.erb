@@ -1,0 +1,28 @@
+<% content_for :title, "Empezar como otro jugador | Rubípticos" %>
+
+<main class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <h1>Empezar como otro jugador</h1>
+      <div class="alert alert-warning" role="alert">
+        <p>Vas a dejar de jugar como <strong><%= jugador_actual.nombre %></strong> y empezar desde cero.</p>
+        <p class="mb-0">
+          No vas a poder recuperar el acceso al jugador anterior. Su historial queda guardado
+          y sigue contando en la tabla de posiciones.
+        </p>
+      </div>
+
+      <%= form_with model: @jugador, url: cambio_de_jugador_path do |form| %>
+        <%= hidden_field_tag :jugador_anterior_id, jugador_actual.id %>
+        <%= render "publico/jugadores/campos_nombre", form: form, jugador: @jugador, sugerencia: @sugerencia %>
+        <div class="form-check mb-3">
+          <%= check_box_tag :confirmacion, "1", false, required: true, class: "form-check-input" %>
+          <%= label_tag :confirmacion, "Entiendo que perderé el acceso al jugador anterior.", class: "form-check-label" %>
+        </div>
+        <%= form.submit "Confirmar y empezar de cero", class: "btn btn-danger" %>
+      <% end %>
+
+      <%= link_to "Cancelar y seguir con mi jugador", root_path, class: "d-inline-block mt-3" %>
+    </div>
+  </div>
+</main>
