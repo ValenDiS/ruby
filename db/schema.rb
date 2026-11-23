@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_20_210000) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_22_120000) do
   create_table "cripticos", force: :cascade do |t|
     t.boolean "activo", default: true, null: false
     t.string "autor"
@@ -36,6 +36,18 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_20_210000) do
     t.check_constraint "length(trim(enunciado)) > 0", name: "cripticos_enunciado_no_vacio"
     t.check_constraint "length(trim(respuesta)) > 0", name: "cripticos_respuesta_no_vacia"
     t.check_constraint "tipo IN ('anagrama', 'oculta', 'charada', 'contenedor', 'inversion', 'supresion', 'homofono', 'doble_definicion', 'iniciales', 'finales', 'sustitucion', 'simbolos', 'combinada')", name: "cripticos_tipo_valido"
+  end
+
+  create_table "jugadores", force: :cascade do |t|
+    t.string "nombre", null: false, collation: "NOCASE"
+    t.string "token", null: false
+    t.boolean "bloqueado", default: false, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "nombre_normalizado", null: false
+    t.index ["nombre"], name: "index_jugadores_on_nombre", unique: true
+    t.index ["nombre_normalizado"], name: "index_jugadores_on_nombre_normalizado", unique: true
+    t.index ["token"], name: "index_jugadores_on_token", unique: true
   end
 
   create_table "nodos_chatbot", force: :cascade do |t|

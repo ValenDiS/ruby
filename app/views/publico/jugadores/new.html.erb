@@ -1,0 +1,42 @@
+<% content_for :title, "Elegí tu nombre | Rubípticos" %>
+
+<main class="container py-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <h1>Elegí tu nombre</h1>
+      <p>Con este nombre vas a aparecer en la tabla de posiciones.</p>
+
+      <% if @jugador.errors.any? %>
+        <div class="alert alert-danger" role="alert" id="errores-jugador">
+          <p class="fw-semibold mb-2">Revisá tu nombre:</p>
+          <ul class="mb-0">
+            <% @jugador.errors.full_messages.each do |mensaje| %>
+              <li><%= mensaje %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <% if @sugerencia %>
+        <p role="status">Ese nombre ya está tomado. Podés probar con <strong><%= @sugerencia %></strong>.</p>
+      <% end %>
+
+      <%= form_with model: @jugador, url: jugador_path do |form| %>
+        <div class="mb-3">
+          <%= form.label :nombre, "Nombre", class: "form-label" %>
+          <%= form.text_field :nombre, class: "form-control", required: true, minlength: 3, maxlength: 20,
+                              autocomplete: "nickname", autofocus: true, aria: { describedby: "ayuda-nombre" } %>
+          <div id="ayuda-nombre" class="form-text">
+            Entre 3 y 20 caracteres, sin espacios al principio ni al final.
+          </div>
+        </div>
+        <%= form.submit "Guardar nombre", class: "btn btn-primary" %>
+      <% end %>
+
+      <p class="text-body-secondary mt-3">
+        Tu jugador se recuerda en este navegador. Si borrás las cookies, perdés el acceso a tu historial.
+      </p>
+      <%= link_to "Volver al inicio", root_path %>
+    </div>
+  </div>
+</main>

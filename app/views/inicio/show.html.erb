@@ -1,4 +1,12 @@
 <main class="container py-4">
   <h1>Rubípticos</h1>
   <p>Descubrí qué palabra esconde cada acertijo.</p>
+  <% if jugador_actual %>
+    <p>Hola, <strong><%= jugador_actual.nombre %></strong>.</p>
+    <% if jugador_actual.bloqueado? %>
+      <p class="alert alert-warning" role="alert">Tu nombre está bloqueado por la administración.</p>
+    <% end %>
+  <% else %>
+    <%= link_to "Elegir nombre", new_jugador_path, class: "btn btn-primary" %>
+  <% end %>
 </main>

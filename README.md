@@ -2,6 +2,42 @@
 
 Sitio para jugar crípticos en español, hecho en Ruby on Rails 8.1 (TFI de TTPS opción Ruby, cursada 2026).
 
+## Identidad del jugador (issue 2, bloque 1)
+
+Desde el inicio, **Elegir nombre** permite registrar un jugador sin cuenta ni contraseña.
+El nombre tiene entre 3 y 20 caracteres, no admite espacios en las puntas y es único sin
+distinguir mayúsculas, también con letras acentuadas. Si está ocupado se propone una
+variante disponible; el visitante debe elegirla, nunca se recupera al dueño de un nombre.
+Los nombres bloqueados continúan reservados.
+
+El navegador conserva únicamente el token de identidad en `cookies.signed[:jugador_token]`,
+con `HttpOnly`, `SameSite=Lax` y `Secure` cuando la conexión es HTTPS. Una cookie alterada
+o asociada a un jugador inexistente se descarta. Borrar las cookies hace perder el acceso
+al jugador anterior. El token es independiente de la sesión administrativa de issue 5.
+
+La base de `Jugador` y la migración `20261120181245_create_jugadores` se reutilizan de
+`issue-5-backend-admin` (commit `f629956`); no se debe generar otra tabla de jugadores.
+Una migración adicional incorpora `nombre_normalizado` (Unicode NFC y minúsculas) con
+índice único, porque `NOCASE` de SQLite no cubre las mayúsculas acentuadas.
+Los registros existentes se normalizan al migrar; si hay nombres equivalentes duplicados,
+deben resolverse antes de aplicar el índice único.
+
+`Publico::BaseController` separa el acceso público del login del backend. El concern
+`IdentidadJugador` maneja la cookie; `RegistroDeJugador` coordina el alta y
+`SugeridorDeNombre` busca variantes. Las validaciones y la normalización pertenecen al modelo.
+
+Para aplicar el bloque y ejecutar sus pruebas, usando la versión de `.ruby-version`:
+
+```bash
+bundle install
+bin/rails db:migrate
+bin/rails test test/models/jugador_test.rb test/services/registro_de_jugador_test.rb test/services/sugeridor_de_nombre_test.rb test/integration/identidad_jugador_test.rb
+```
+
+En PowerShell se pueden ejecutar los comandos Rails como `ruby bin\rails ...`.
+El cambio de nombre, la nueva identidad y el flujo de partidas se incorporan en los
+siguientes bloques de issue 2.
+
 ## Catálogo de crípticos y sincronización
 
 El catálogo se trae de la API JSON de la cátedra ([ecorrons/cryptics-api](https://github.com/ecorrons/cryptics-api)) **por HTTP** y se guarda en la base. El juego siempre lee los crípticos de la base: la API solo se consulta al sincronizar.
