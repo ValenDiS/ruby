@@ -63,6 +63,40 @@ Este bloque no requiere migraciones nuevas ni implementa todavía el flujo de pa
 bin/rails test test/services/asignacion_de_nombre_test.rb test/services/cambio_de_jugador_test.rb test/integration/gestion_de_jugador_test.rb
 ```
 
+## Asignación de partidas (issue 2, bloque 3)
+
+Se reutilizan el modelo `Partida`, su migración `20261121233331_create_partidas`,
+sus fixtures y sus pruebas de `issue-3-puntaje-rachas` (commit `14297a8`).
+Las asociaciones con jugador y críptico impiden borrar registros que tengan historial.
+El índice único de jugador/críptico y los límites de intentos y pistas están también en la base.
+No se debe generar otra tabla de partidas al integrar issue 3.
+
+`AsignadorDePartidas.call(jugador: jugador, dificultad: "medio")` selecciona al azar en
+la base un críptico jugable de esa dificultad, excluyendo todos los que ya tengan una
+partida de ese jugador, tanto resueltos como rendidos. Lo jugado por otros jugadores
+no lo excluye. La asignación se guarda con `iniciado_at: nil`, cero intentos y cero pistas;
+el reloj no comienza todavía.
+
+La asignación toma un bloqueo del jugador, vuelve a leer su token y su estado de bloqueo,
+y prioriza su partida abierta antes de crear otra. Repetir la solicitud, incluso pidiendo
+otra dificultad, devuelve esa misma partida sin cambiar sus timestamps ni sus contadores.
+Una partida abierta se conserva aunque después se desactive su críptico: los filtros de
+catálogo se aplican a las asignaciones nuevas.
+
+El resultado contiene `partida`, `estado` y `exitoso?`. Los estados son `asignada`,
+`retomada`, `sin_disponibles`, `dificultad_invalida`, `jugador_bloqueado` e
+`identidad_retirada`. Los errores de infraestructura se propagan; no se presentan como
+catálogo agotado. Se admiten únicamente `facil`, `medio` y `avanzado`.
+
+Este bloque prepara la lógica y la persistencia. La pantalla de dificultad, el botón
+Jugar y la reanudación desde el navegador se conectan en el bloque siguiente.
+Las pruebas de identidad ahora verifican también la conservación de partidas reales.
+
+```bash
+bin/rails db:migrate
+bin/rails test test/models/partida_test.rb test/services/asignador_de_partidas_test.rb
+```
+
 ## Catálogo de crípticos y sincronización
 
 El catálogo se trae de la API JSON de la cátedra ([ecorrons/cryptics-api](https://github.com/ecorrons/cryptics-api)) **por HTTP** y se guarda en la base. El juego siempre lee los crípticos de la base: la API solo se consulta al sincronizar.

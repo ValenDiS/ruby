@@ -15,6 +15,18 @@ class AsignacionDeNombreTest < ActiveSupport::TestCase
     assert_equal originales, jugador.attributes.except("nombre", "nombre_normalizado", "updated_at")
   end
 
+  test "renombrar conserva las partidas y sus resultados" do
+    jugador = jugadores(:pedrito)
+    partida = partidas(:resuelta)
+    originales = partida.attributes
+
+    assert AsignacionDeNombre.call(jugador: jugador, nombre: "Pedro").exitoso?
+
+    assert_equal originales, partida.reload.attributes
+    assert_equal jugador.id, partida.jugador_id
+    assert_includes jugador.partidas, partida
+  end
+
   test "un nombre ocupado no modifica el registro y devuelve una sugerencia" do
     jugador = jugadores(:pedrito)
     originales = jugador.attributes

@@ -2,6 +2,9 @@
 class Jugador < ApplicationRecord
   has_secure_token :token
 
+  # El historial queda aunque el jugador ya no se use («empezar como otro jugador»).
+  has_many :partidas, dependent: :restrict_with_error
+
   before_validation :normalizar_nombre
 
   validates :nombre, presence: true, length: { in: 3..20 },

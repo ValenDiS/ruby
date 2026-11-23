@@ -35,6 +35,19 @@ class CambioDeJugadorTest < ActiveSupport::TestCase
     assert_nil Jugador.find_by(token: token_anterior)
   end
 
+  test "empezar de cero mantiene el historial anterior y no lo transfiere al nuevo jugador" do
+    anterior = jugadores(:pedrito)
+    partida = partidas(:resuelta)
+    originales = partida.attributes
+
+    resultado = CambioDeJugador.call(jugador: anterior, nombre: "Nueva", confirmado: true)
+
+    assert resultado.exitoso?
+    assert_equal originales, partida.reload.attributes
+    assert_includes anterior.partidas, partida
+    assert_empty resultado.jugador.partidas
+  end
+
   test "un nombre ocupado conserva el acceso al jugador anterior" do
     anterior = jugadores(:pedrito)
     originales = anterior.attributes
