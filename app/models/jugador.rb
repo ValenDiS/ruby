@@ -1,5 +1,3 @@
-# Stub mínimo para el backend (issue 5). El resto (cookie, partidas, puntaje y racha)
-# lo completan los issues 2 y 3.
 class Jugador < ApplicationRecord
   has_secure_token :token
 
@@ -12,13 +10,17 @@ class Jugador < ApplicationRecord
 
   scope :visibles, -> { where(bloqueado: false) }
 
-  # TODO issue 3: suma de los puntos de las partidas resueltas.
+  # Los puntos ya quedan guardados en cada partida al resolverla;
+  # las rendidas valen 0, así que no suman.
   def puntos_totales
-    0
+    partidas.resueltas.sum(:puntos)
   end
 
-  # TODO issue 3: días seguidos jugando, contando hoy.
   def racha_actual
-    0
+    CalculadorDeRacha.new(self).actual
+  end
+
+  def mejor_racha
+    CalculadorDeRacha.new(self).mejor
   end
 end
