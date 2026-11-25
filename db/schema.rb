@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_11_21_233331) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_25_174938) do
   create_table "configuraciones", force: :cascade do |t|
     t.string "url_fuente", default: "https://ecorrons.github.io/cryptics-api/v1/cryptics.json", null: false
     t.text "texto_bienvenida", default: "¡Bienvenido a Rubípticos! Elegí una dificultad y resolvé crípticos.", null: false
@@ -38,6 +38,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_21_233331) do
     t.boolean "en_fuente", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "elegible_dia", default: false, null: false
     t.index ["dificultad", "activo", "en_fuente"], name: "index_cripticos_on_dificultad_and_activo_and_en_fuente"
     t.index ["id_fuente"], name: "index_cripticos_on_id_fuente", unique: true
     t.index ["tipo"], name: "index_cripticos_on_tipo"

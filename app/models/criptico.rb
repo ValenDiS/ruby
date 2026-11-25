@@ -16,11 +16,13 @@ class Criptico < ApplicationRecord
   # y sigue viniendo en la fuente.
   scope :jugables, -> { where(activo: true, en_fuente: true) }
   scope :fuera_de_fuente, -> { where(en_fuente: false) }
+  # Candidatos a críptico del día: marcados y que se puedan jugar.
+  scope :elegibles_del_dia, -> { jugables.where(elegible_dia: true) }
 
   validates :id_fuente, presence: true, uniqueness: true
   validates :enunciado, :respuesta, :enumeracion, presence: true
   validates :tipo, :dificultad, presence: true
-  validates :activo, :en_fuente, inclusion: { in: [ true, false ] }
+  validates :activo, :en_fuente, :elegible_dia, inclusion: { in: [ true, false ] }
 
   validate :enumeracion_coincide_con_respuesta
   validate :fragmentos_aparecen_en_enunciado

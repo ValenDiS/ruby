@@ -47,6 +47,8 @@ es:
       jugador:
         nombre: Nombre
         bloqueado: Bloqueado
+      criptico:
+        elegible_dia: Elegible como críptico del día
       partida:
         jugador: Jugador
         criptico: Críptico

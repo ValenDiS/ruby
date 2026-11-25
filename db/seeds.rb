@@ -26,4 +26,9 @@ end
 
 # Catálogo de crípticos: se trae de la API con el mismo sincronizador que usa el admin.
 load Rails.root.join("db/seeds/cripticos.rb")
+
+# Para el críptico del día: si todavía no hay ninguno marcado, quedan elegibles todos
+# los jugables. Si el admin ya eligió algunos, no se toca su elección.
+Criptico.jugables.update_all(elegible_dia: true) unless Criptico.where(elegible_dia: true).exists?
+
 load Rails.root.join("db/seeds/chatbot.rb")

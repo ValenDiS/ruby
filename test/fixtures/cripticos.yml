@@ -13,3 +13,4 @@ mate:
   autor: Cátedra
   activo: true
   en_fuente: true
+  elegible_dia: true

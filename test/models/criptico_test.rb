@@ -102,4 +102,22 @@ class CripticoTest < ActiveSupport::TestCase
     cripticos(:mate).update!(en_fuente: true, activo: false)
     assert_not_includes Criptico.jugables, cripticos(:mate)
   end
+
+  test "elegibles del día son los marcados que se pueden jugar" do
+    mate = cripticos(:mate)
+    assert_includes Criptico.elegibles_del_dia, mate
+
+    mate.update!(activo: false)
+    assert_not_includes Criptico.elegibles_del_dia, mate
+  end
+
+  test "un críptico nuevo no es elegible para el día hasta que se marque" do
+    assert_not Criptico.new.elegible_dia?
+  end
+
+  test "la base no acepta elegible_dia vacío" do
+    assert_raises(ActiveRecord::NotNullViolation) do
+      cripticos(:mate).update_column(:elegible_dia, nil)
+    end
+  end
 end
