@@ -92,6 +92,21 @@ Los tests del servicio no usan internet. Inyectan un cliente HTTP falso o levant
 bin/rails test test/services/sincronizador_de_cripticos_test.rb test/models/criptico_test.rb test/models/sincronizacion_test.rb
 ```
 
+### Estadísticas por críptico
+
+`EstadisticasDeCriptico` (`app/services/estadisticas_de_criptico.rb`) calcula los datos que muestra el listado de crípticos del admin:
+
+- **Veces jugado:** las partidas iniciadas, es decir, aquellas en las que el jugador tocó «Jugar».
+- **Porcentaje resuelto:** las resueltas sobre las iniciadas. Las rendidas cuentan como jugadas, pero no como resueltas.
+- **Tiempo promedio:** solo de las resueltas, entre `iniciado_at` y `resuelto_at`.
+
+Hace una sola consulta agrupada para todos los crípticos del listado, así no hay N+1:
+
+```ruby
+estadisticas = EstadisticasDeCriptico.new(@cripticos).call
+estadisticas[criptico.id].porcentaje_resuelto # => 66.7
+```
+
 ### Decisiones de diseño
 
 - **Dos flags: `activo` y `en_fuente`.**
