@@ -9,6 +9,7 @@
 #   pistas: cada pista resta 0,20
 #   racha:  cada día de racha (contando hoy) suma 0,05, hasta 1,5
 #
+# Si el críptico era el críptico del día (el día en que se resolvió), vale el doble.
 # Se redondea al entero más cercano. Una partida resuelta da como mínimo 10 puntos
 # y una rendida da 0.
 class CalculadorDePuntaje
@@ -18,6 +19,7 @@ class CalculadorDePuntaje
   BONUS_POR_DIA_DE_RACHA = 0.05
   FACTOR_DE_RACHA_MAXIMO = 1.5
   PUNTOS_MINIMOS = 10
+  MULTIPLICADOR_CRIPTICO_DEL_DIA = 2
 
   def initialize(partida)
     @partida = partida
@@ -27,7 +29,7 @@ class CalculadorDePuntaje
   def calcular
     return 0 if @partida.rendida?
 
-    puntos = (base * factor_de_tiempo * factor_de_pistas * factor_de_racha).round
+    puntos = (base * factor_de_tiempo * factor_de_pistas * factor_de_racha * factor_del_dia).round
     [ puntos, PUNTOS_MINIMOS ].max
   end
 
@@ -53,5 +55,10 @@ class CalculadorDePuntaje
   def factor_de_racha
     dias = CalculadorDeRacha.new(@partida.jugador).contando_hoy
     [ 1 + BONUS_POR_DIA_DE_RACHA * dias, FACTOR_DE_RACHA_MAXIMO ].min
+  end
+
+  def factor_del_dia
+    del_dia = CripticoDelDia.new(@partida.resuelto_at.to_date).es?(@criptico)
+    del_dia ? MULTIPLICADOR_CRIPTICO_DEL_DIA : 1
   end
 end

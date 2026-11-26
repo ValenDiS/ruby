@@ -94,4 +94,19 @@ class CalculadorDePuntajeTest < ActiveSupport::TestCase
 
     assert_equal 0, CalculadorDePuntaje.new(rendida).calcular
   end
+
+  test "el críptico del día vale el doble" do
+    del_dia = CripticoDelDia.new.criptico
+    resuelta = Partida.new(jugador: @jugador, criptico: del_dia,
+                           iniciado_at: 10.seconds.ago, resuelto_at: Time.current)
+    calculador = CalculadorDePuntaje.new(resuelta)
+
+    assert_equal 2, calculador.factor_del_dia
+    # oculta fácil: 100 × 1 × 1 × 1,05 × 2 = 210
+    assert_equal 210, calculador.calcular
+  end
+
+  test "un críptico que no es el del día no se duplica" do
+    assert_equal 1, CalculadorDePuntaje.new(partida(dificultad: "facil", segundos: 10)).factor_del_dia
+  end
 end
