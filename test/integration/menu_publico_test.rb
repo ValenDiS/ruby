@@ -10,7 +10,7 @@ class MenuPublicoTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "nav[aria-label='Menú del sitio']" do
       assert_select "a.navbar-brand[href=?]", root_path
-      assert_select ".nav-link", "Jugar"
+      assert_select "a.nav-link[href=?]", new_partida_path, "Jugar"
       assert_select ".nav-link", "Mi racha"
       assert_select ".nav-link", "Tabla de posiciones"
       assert_select "a.nav-link[href=?]", chatbot_path, "Cómo se juega"
