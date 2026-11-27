@@ -1,8 +1,10 @@
 pedrito:
   nombre: Pedrito
+  nombre_normalizado: pedrito
   token: token-pedrito
 
 ofensivo:
   nombre: NombreFeo
+  nombre_normalizado: nombrefeo
   token: token-ofensivo
   bloqueado: true

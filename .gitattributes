@@ -7,3 +7,7 @@ db/schema.rb linguist-generated
 vendor/* linguist-vendored
 config/credentials/*.yml.enc diff=rails_credentials
 config/credentials.yml.enc diff=rails_credentials
+
+# Los scripts de bin/ se ejecutan en Linux/WSL: siempre con fin de línea LF,
+# aunque Git en Windows tenga core.autocrlf=true (si no: env: 'ruby\r').
+bin/* text eol=lf

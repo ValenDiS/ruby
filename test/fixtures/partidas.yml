@@ -1,0 +1,16 @@
+resuelta:
+  jugador: pedrito
+  criptico: mate
+  iniciado_at: <%= 2.minutes.ago %>
+  resuelto_at: <%= 1.minute.ago %>
+  intentos: 2
+  pistas_usadas: 1
+  puntos: 80
+
+rendida:
+  jugador: ofensivo
+  criptico: mate
+  iniciado_at: <%= 10.minutes.ago %>
+  rendido_at: <%= 5.minutes.ago %>
+  intentos: 5
+  puntos: 0
