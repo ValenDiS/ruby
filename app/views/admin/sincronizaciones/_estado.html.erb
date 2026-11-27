@@ -1,0 +1,2 @@
+<% clase = { "exitosa" => "success", "sin_cambios" => "secondary", "fallida" => "danger" }[sincronizacion.estado] %>
+<span class="badge text-bg-<%= clase %>"><%= t("sincronizaciones.estados.#{sincronizacion.estado}") %></span>

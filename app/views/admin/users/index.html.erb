@@ -1,0 +1,27 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="h3 mb-0">Usuarios</h1>
+  <%= link_to "Nuevo usuario", new_admin_user_path, class: "btn btn-primary" %>
+</div>
+
+<div class="table-responsive">
+  <table class="table align-middle">
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Rol</th>
+        <th>Estado</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td><%= user.email_address %></td>
+          <td><%= User.human_attribute_name("rol.#{user.rol}") %></td>
+          <td><%= user.activo? ? "Activo" : "Desactivado" %></td>
+          <td class="text-end"><%= link_to "Editar", edit_admin_user_path(user), class: "btn btn-sm btn-outline-secondary" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

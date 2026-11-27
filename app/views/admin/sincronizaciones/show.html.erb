@@ -1,0 +1,54 @@
+<h1 class="h3 mb-3">Informe de sincronización <%= render "estado", sincronizacion: @sincronizacion %></h1>
+
+<dl class="row">
+  <dt class="col-sm-3">Fecha</dt>
+  <dd class="col-sm-9"><%= l(@sincronizacion.fecha, format: :long) %></dd>
+
+  <dt class="col-sm-3">Hecha por</dt>
+  <dd class="col-sm-9"><%= @usuario&.email_address || "Sistema" %></dd>
+
+  <dt class="col-sm-3">Fuente</dt>
+  <dd class="col-sm-9 text-break"><%= @sincronizacion.url %></dd>
+
+  <dt class="col-sm-3">Versión</dt>
+  <dd class="col-sm-9"><%= @sincronizacion.version || "—" %></dd>
+</dl>
+
+<% if @sincronizacion.fallida? %>
+  <div class="alert alert-danger">
+    No se modificó ningún críptico. <%= @sincronizacion.mensaje_error %>
+  </div>
+<% elsif @sincronizacion.sin_cambios? %>
+  <div class="alert alert-secondary">Sin cambios: la fuente tiene la misma versión que la última sincronización.</div>
+<% else %>
+  <div class="row g-3 mb-4 text-center">
+    <% { "Creados" => @sincronizacion.creados, "Actualizados" => @sincronizacion.actualizados,
+         "Desactivados" => @sincronizacion.desactivados, "Rechazados" => @sincronizacion.rechazados }.each do |nombre, cantidad| %>
+      <div class="col-6 col-md-3">
+        <div class="border rounded p-3">
+          <div class="fs-3"><%= cantidad %></div>
+          <div class="text-body-secondary"><%= nombre %></div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <% if @sincronizacion.detalle_rechazados.any? %>
+    <h2 class="h5">Crípticos rechazados</h2>
+    <div class="table-responsive">
+      <table class="table">
+        <thead><tr><th>Id</th><th>Motivo</th></tr></thead>
+        <tbody>
+          <% @sincronizacion.detalle_rechazados.each do |rechazo| %>
+            <tr>
+              <td><%= rechazo["id"] %></td>
+              <td><%= rechazo["motivo"] %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+<% end %>
+
+<%= link_to "Volver", admin_sincronizaciones_path, class: "btn btn-link px-0" %>

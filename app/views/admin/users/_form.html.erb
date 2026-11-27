@@ -1,0 +1,42 @@
+<%= form_with model: [ :admin, user ] do |form| %>
+  <% if user.errors.any? %>
+    <div class="alert alert-danger">
+      <ul class="mb-0">
+        <% user.errors.full_messages.each do |mensaje| %>
+          <li><%= mensaje %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :email_address, class: "form-label" %>
+    <%= form.email_field :email_address, required: true, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :password, class: "form-label" %>
+    <%= form.password_field :password, class: "form-control", autocomplete: "new-password" %>
+    <% if user.persisted? %>
+      <div class="form-text">Dejala vacía para no cambiarla.</div>
+    <% end %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :password_confirmation, class: "form-label" %>
+    <%= form.password_field :password_confirmation, class: "form-control", autocomplete: "new-password" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :rol, class: "form-label" %>
+    <%= form.select :rol, User.rols.keys.map { |rol| [ User.human_attribute_name("rol.#{rol}"), rol ] }, {}, class: "form-select" %>
+  </div>
+
+  <div class="form-check mb-3">
+    <%= form.check_box :activo, class: "form-check-input" %>
+    <%= form.label :activo, class: "form-check-label" %>
+  </div>
+
+  <%= form.submit "Guardar", class: "btn btn-primary" %>
+  <%= link_to "Volver", admin_users_path, class: "btn btn-link" %>
+<% end %>

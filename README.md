@@ -119,3 +119,31 @@ estadisticas[criptico.id].porcentaje_resuelto # => 66.7
 - **Enums guardados como texto** (`tipo`, `dificultad`, `estado`), con un check constraint en la base. Un valor desconocido da un error de validación, no una excepción.
 - **Las reglas por tipo están en `VerificadorDeCriptico`**, como funciones puras, para testearlas y explicarlas aparte del modelo.
 - **El cliente HTTP se puede inyectar en el servicio**, así se testea sin internet y sin gemas extra.
+
+## Backend de administración
+
+Se entra en `/admin` con email y contraseña. No hay registro público: el primer admin lo crea `bin/rails db:setup` (o `bin/rails db:seed`).
+
+**Admin de prueba:** `admin@rubipticos.com` / `admin1234`. Se pueden cambiar con las variables de entorno `ADMIN_EMAIL` y `ADMIN_PASSWORD` al correr los seeds.
+
+### Qué puede hacer cada rol
+
+| Sección | Administrador | Editor de puntajes |
+|---|---|---|
+| Puntajes (puntos por tipo y multiplicadores) | ✅ | ✅ |
+| Crípticos (listado con filtros, activar/desactivar) | ✅ | ❌ |
+| Configuración (URL de la fuente, texto de bienvenida) | ✅ | ❌ |
+| Sincronización («Sincronizar ahora», historial e informe) | ✅ | ❌ |
+| Jugadores (bloquear nombres, reiniciar la tabla) | ✅ | ❌ |
+| Usuarios del backend (alta, edición, rol, desactivar) | ✅ | ❌ |
+
+### Decisiones de diseño
+
+- **Login con el generador de Rails 8** (`bin/rails g authentication`). El modelo queda como `User`, como lo genera Rails, con `rol` (`admin` o `editor_puntajes`) y `activo`, validados en el modelo y con un check constraint en la base. Se sacó el reset de contraseña porque no hay mailer.
+- **Permisos en el servidor.** Todos los controladores del admin heredan de `Admin::BaseController`, que exige login y por defecto deja entrar solo al admin. Los que también usa el editor lo declaran con `permitir_roles :admin, :editor_puntajes`. Si un editor escribe a mano la URL de otra sección, lo redirige con un aviso.
+- **Un usuario desactivado no puede entrar**, y si tenía una sesión abierta deja de valer.
+- **Siempre queda al menos un admin activo**: el modelo no deja desactivar ni pasar a editor al último.
+- **Los usuarios no se borran**, se desactivan.
+- **La configuración es una sola fila** (`Configuracion.actual`), garantizada también con un check en la base.
+- **«Sincronizar ahora» usa la URL guardada en Configuración** y llama al servicio `SincronizadorDeCripticos` del catálogo; el controlador no tiene lógica de sincronización.
+- **Reiniciar la tabla no borra nada**: guarda la fecha en `Configuracion.tabla_reiniciada_at` y la tabla de posiciones cuenta solo las partidas resueltas después.

@@ -1,0 +1,73 @@
+<h1 class="h3 mb-3">Crípticos</h1>
+
+<%= form_with url: admin_cripticos_path, method: :get, class: "row g-2 mb-3" do |form| %>
+  <div class="col-6 col-md">
+    <%= form.select :dificultad, Criptico::DIFICULTADES.map { |d| [ t("cripticos.dificultades.#{d}"), d ] },
+                    { include_blank: "Todas las dificultades", selected: @filtros[:dificultad] }, class: "form-select" %>
+  </div>
+  <div class="col-6 col-md">
+    <%= form.select :tipo, Criptico::TIPOS.map { |tipo| [ t("cripticos.tipos.#{tipo}"), tipo ] },
+                    { include_blank: "Todos los tipos", selected: @filtros[:tipo] }, class: "form-select" %>
+  </div>
+  <div class="col-6 col-md">
+    <%= form.select :estado, FiltroDeCripticos::ESTADOS.map { |e| [ t("cripticos.estados.#{e}"), e ] },
+                    { include_blank: "Todos los estados", selected: @filtros[:estado] }, class: "form-select" %>
+  </div>
+  <div class="col-6 col-md">
+    <%= form.select :origen, @origenes, { include_blank: "Todos los orígenes", selected: @filtros[:origen] }, class: "form-select" %>
+  </div>
+  <div class="col-12 col-md-auto">
+    <%= form.submit "Filtrar", name: nil, class: "btn btn-primary" %>
+    <%= link_to "Limpiar", admin_cripticos_path, class: "btn btn-link" %>
+  </div>
+<% end %>
+
+<p class="text-body-secondary"><%= pluralize(@cripticos.size, "críptico", plural: "crípticos") %></p>
+
+<div class="table-responsive">
+  <table class="table align-middle">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Enunciado</th>
+        <th>Tipo</th>
+        <th>Dificultad</th>
+        <th>Origen</th>
+        <th>Veces jugado</th>
+        <th>% resuelto</th>
+        <th>Tiempo promedio</th>
+        <th>Estado</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @cripticos.each do |criptico| %>
+        <tr>
+          <td><%= criptico.id_fuente %></td>
+          <td><%= criptico.enunciado %> <%= criptico.enumeracion %></td>
+          <td><%= t("cripticos.tipos.#{criptico.tipo}") %></td>
+          <td><%= t("cripticos.dificultades.#{criptico.dificultad}") %></td>
+          <td><%= criptico.origen %></td>
+          <% estadistica = @estadisticas[criptico.id] %>
+          <td><%= estadistica.veces_jugado %></td>
+          <td><%= estadistica.porcentaje_resuelto ? "#{number_with_precision(estadistica.porcentaje_resuelto, precision: 1)} %" : "—" %></td>
+          <td><%= estadistica.tiempo_promedio ? "#{estadistica.tiempo_promedio} s" : "—" %></td>
+          <td>
+            <% if !criptico.en_fuente? %>
+              <span class="badge text-bg-secondary">Fuera de la fuente</span>
+            <% elsif criptico.activo? %>
+              <span class="badge text-bg-success">Activo</span>
+            <% else %>
+              <span class="badge text-bg-warning">Desactivado</span>
+            <% end %>
+          </td>
+          <td class="text-end">
+            <%= button_to criptico.activo? ? "Desactivar" : "Activar", admin_criptico_path(criptico),
+                          method: :patch, params: { criptico: { activo: !criptico.activo? } },
+                          class: "btn btn-sm btn-outline-secondary" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

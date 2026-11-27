@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title><%= content_for(:title) || "Administración" %> · Rubípticos</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+      <div class="container">
+        <%= link_to "Rubípticos · Admin", admin_root_path, class: "navbar-brand" %>
+
+        <% if authenticated? %>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu-admin">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="menu-admin">
+            <ul class="navbar-nav me-auto">
+              <li class="nav-item"><%= link_to "Inicio", admin_root_path, class: "nav-link" %></li>
+              <li class="nav-item"><%= link_to "Puntajes", admin_puntajes_por_tipo_path, class: "nav-link" %></li>
+              <% if Current.user.admin? %>
+                <li class="nav-item"><%= link_to "Crípticos", admin_cripticos_path, class: "nav-link" %></li>
+                <li class="nav-item"><%= link_to "Sincronización", admin_sincronizaciones_path, class: "nav-link" %></li>
+                <li class="nav-item"><%= link_to "Jugadores", admin_jugadores_path, class: "nav-link" %></li>
+                <li class="nav-item"><%= link_to "Configuración", edit_admin_configuracion_path, class: "nav-link" %></li>
+                <li class="nav-item"><%= link_to "Usuarios", admin_users_path, class: "nav-link" %></li>
+              <% end %>
+            </ul>
+            <span class="navbar-text me-3"><%= Current.user.email_address %></span>
+            <%= button_to "Salir", session_path, method: :delete, class: "btn btn-outline-light btn-sm" %>
+          </div>
+        <% end %>
+      </div>
+    </nav>
+
+    <main class="container">
+      <%= render "shared/flash" %>
+      <%= yield %>
+    </main>
+  </body>
+</html>

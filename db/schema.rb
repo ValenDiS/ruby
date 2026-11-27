@@ -11,23 +11,32 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[8.1].define(version: 2026_11_22_120000) do
-  create_table "cripticos", force: :cascade do |t|
-    t.boolean "activo", default: true, null: false
-    t.string "autor"
-    t.text "ayuda"
+  create_table "configuraciones", force: :cascade do |t|
+    t.string "url_fuente", default: "https://ecorrons.github.io/cryptics-api/v1/cryptics.json", null: false
+    t.text "texto_bienvenida", default: "¡Bienvenido a Rubípticos! Elegí una dificultad y resolvé crípticos.", null: false
     t.datetime "created_at", null: false
-    t.json "definiciones", default: [], null: false
-    t.string "dificultad", null: false
-    t.boolean "en_fuente", default: true, null: false
-    t.string "enumeracion", null: false
-    t.text "enunciado", null: false
-    t.text "explicacion"
+    t.datetime "updated_at", null: false
+    t.datetime "tabla_reiniciada_at"
+    t.check_constraint "id = 1", name: "configuraciones_fila_unica"
+  end
+
+  create_table "cripticos", force: :cascade do |t|
     t.string "id_fuente", null: false
+    t.text "enunciado", null: false
+    t.string "enumeracion", null: false
+    t.string "respuesta", null: false
+    t.json "definiciones", default: [], null: false
     t.json "indicadores", default: [], null: false
     t.json "material", default: [], null: false
-    t.string "origen"
-    t.string "respuesta", null: false
     t.string "tipo", null: false
+    t.string "dificultad", null: false
+    t.text "ayuda"
+    t.text "explicacion"
+    t.string "autor"
+    t.string "origen"
+    t.boolean "activo", default: true, null: false
+    t.boolean "en_fuente", default: true, null: false
+    t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["dificultad", "activo", "en_fuente"], name: "index_cripticos_on_dificultad_and_activo_and_en_fuente"
     t.index ["id_fuente"], name: "index_cripticos_on_id_fuente", unique: true
@@ -48,6 +57,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_22_120000) do
     t.index ["nombre"], name: "index_jugadores_on_nombre", unique: true
     t.index ["nombre_normalizado"], name: "index_jugadores_on_nombre_normalizado", unique: true
     t.index ["token"], name: "index_jugadores_on_token", unique: true
+  end
+
+  create_table "multiplicadores_dificultad", force: :cascade do |t|
+    t.string "dificultad", null: false
+    t.decimal "valor", precision: 3, scale: 2, default: "1.0", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["dificultad"], name: "index_multiplicadores_dificultad_on_dificultad", unique: true
+    t.check_constraint "dificultad IN ('facil', 'medio', 'avanzado')", name: "multiplicadores_dificultad_dificultad_valida"
+    t.check_constraint "valor > 0 AND valor <= 5", name: "multiplicadores_dificultad_valor_valido"
   end
 
   create_table "nodos_chatbot", force: :cascade do |t|
@@ -90,27 +109,58 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_22_120000) do
     t.check_constraint "resuelto_at IS NULL OR rendido_at IS NULL", name: "partidas_resuelta_o_rendida"
   end
 
-  create_table "sincronizaciones", force: :cascade do |t|
-    t.integer "actualizados", default: 0, null: false
+  create_table "puntajes_por_tipo", force: :cascade do |t|
+    t.string "tipo", null: false
+    t.integer "puntos", default: 100, null: false
     t.datetime "created_at", null: false
-    t.integer "creados", default: 0, null: false
-    t.integer "desactivados", default: 0, null: false
-    t.json "detalle_rechazados", default: [], null: false
-    t.string "estado", null: false
-    t.text "mensaje_error"
-    t.integer "rechazados", default: 0, null: false
     t.datetime "updated_at", null: false
-    t.string "url", null: false
+    t.index ["tipo"], name: "index_puntajes_por_tipo_on_tipo", unique: true
+    t.check_constraint "puntos BETWEEN 10 AND 1000", name: "puntajes_por_tipo_puntos_validos"
+    t.check_constraint "tipo IN ('anagrama', 'oculta', 'charada', 'contenedor', 'inversion', 'supresion', 'homofono', 'doble_definicion', 'iniciales', 'finales', 'sustitucion', 'simbolos', 'combinada')", name: "puntajes_por_tipo_tipo_valido"
+  end
+
+  create_table "sessions", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "ip_address"
+    t.string "user_agent"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "sincronizaciones", force: :cascade do |t|
     t.bigint "user_id"
+    t.string "url", null: false
     t.string "version"
+    t.string "estado", null: false
+    t.integer "creados", default: 0, null: false
+    t.integer "actualizados", default: 0, null: false
+    t.integer "desactivados", default: 0, null: false
+    t.integer "rechazados", default: 0, null: false
+    t.json "detalle_rechazados", default: [], null: false
+    t.text "mensaje_error"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["estado", "created_at"], name: "index_sincronizaciones_on_estado_and_created_at"
     t.index ["user_id"], name: "index_sincronizaciones_on_user_id"
     t.check_constraint "creados >= 0 AND actualizados >= 0 AND desactivados >= 0 AND rechazados >= 0", name: "sincronizaciones_contadores_no_negativos"
     t.check_constraint "estado IN ('exitosa', 'sin_cambios', 'fallida')", name: "sincronizaciones_estado_valido"
   end
 
+  create_table "users", force: :cascade do |t|
+    t.string "email_address", null: false
+    t.string "password_digest", null: false
+    t.string "rol", default: "editor_puntajes", null: false
+    t.boolean "activo", default: true, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email_address"], name: "index_users_on_email_address", unique: true
+    t.check_constraint "rol IN ('admin', 'editor_puntajes')", name: "users_rol_valido"
+  end
+
   add_foreign_key "opciones_chatbot", "nodos_chatbot", column: "destino_id"
   add_foreign_key "opciones_chatbot", "nodos_chatbot", column: "origen_id"
   add_foreign_key "partidas", "cripticos"
   add_foreign_key "partidas", "jugadores"
+  add_foreign_key "sessions", "users"
 end

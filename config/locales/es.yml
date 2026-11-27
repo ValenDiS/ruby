@@ -41,3 +41,53 @@ es:
       user:
         one: Usuario
         other: Usuarios
+    attributes:
+      user:
+        email_address: Email
+        password: Contraseña
+        password_confirmation: Confirmación de contraseña
+        rol: Rol
+        activo: Activo
+      user/rol:
+        admin: Administrador
+        editor_puntajes: Editor de puntajes
+      puntaje_por_tipo:
+        tipo: Tipo
+        puntos: Puntos
+      multiplicador_dificultad:
+        dificultad: Dificultad
+        valor: Multiplicador
+      jugador:
+        nombre: Nombre
+        bloqueado: Bloqueado
+      configuracion:
+        url_fuente: URL de la fuente de crípticos
+        texto_bienvenida: Texto de bienvenida
+  cripticos:
+    tipos:
+      anagrama: Anagrama
+      oculta: Oculta
+      charada: Charada
+      contenedor: Contenedor
+      inversion: Inversión
+      supresion: Supresión
+      homofono: Homófono
+      doble_definicion: Doble definición
+      iniciales: Iniciales
+      finales: Finales
+      sustitucion: Sustitución
+      simbolos: Símbolos
+      combinada: Combinada
+    dificultades:
+      facil: Fácil
+      medio: Medio
+      avanzado: Avanzado
+    estados:
+      jugable: Activo
+      desactivado: Desactivado
+      fuera_de_fuente: Fuera de la fuente
+  sincronizaciones:
+    estados:
+      exitosa: Exitosa
+      sin_cambios: Sin cambios
+      fallida: Fallida

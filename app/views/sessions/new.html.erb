@@ -1,0 +1,19 @@
+<div class="row justify-content-center mt-5">
+  <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+    <h1 class="h3 mb-4 text-center">Ingresar al administrador</h1>
+
+    <%= form_with url: session_path do |form| %>
+      <div class="mb-3">
+        <%= form.label :email_address, "Email", class: "form-label" %>
+        <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username",
+                             value: params[:email_address], class: "form-control" %>
+      </div>
+      <div class="mb-3">
+        <%= form.label :password, "Contraseña", class: "form-label" %>
+        <%= form.password_field :password, required: true, autocomplete: "current-password",
+                                maxlength: 72, class: "form-control" %>
+      </div>
+      <%= form.submit "Ingresar", class: "btn btn-primary w-100" %>
+    <% end %>
+  </div>
+</div>

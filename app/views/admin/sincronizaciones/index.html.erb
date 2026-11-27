@@ -1,0 +1,30 @@
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+  <h1 class="h3 mb-0">Sincronización</h1>
+  <%= button_to "Sincronizar ahora", admin_sincronizaciones_path, class: "btn btn-primary",
+                data: { turbo_submits_with: "Sincronizando..." } %>
+</div>
+
+<p class="text-body-secondary">Fuente: <%= @url_fuente %></p>
+
+<div class="table-responsive">
+  <table class="table align-middle">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Hecha por</th>
+        <th>Resultado</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @sincronizaciones.each do |sincronizacion| %>
+        <tr>
+          <td><%= l(sincronizacion.fecha, format: :short) %></td>
+          <td><%= @usuarios[sincronizacion.user_id]&.email_address || "Sistema" %></td>
+          <td><%= render "estado", sincronizacion: sincronizacion %> <%= sincronizacion.resumen %></td>
+          <td class="text-end"><%= link_to "Ver informe", admin_sincronizacion_path(sincronizacion), class: "btn btn-sm btn-outline-secondary" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
