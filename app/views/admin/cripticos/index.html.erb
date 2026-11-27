@@ -33,6 +33,9 @@
         <th>Tipo</th>
         <th>Dificultad</th>
         <th>Origen</th>
+        <th>Veces jugado</th>
+        <th>% resuelto</th>
+        <th>Tiempo promedio</th>
         <th>Estado</th>
         <th></th>
       </tr>
@@ -45,6 +48,10 @@
           <td><%= t("cripticos.tipos.#{criptico.tipo}") %></td>
           <td><%= t("cripticos.dificultades.#{criptico.dificultad}") %></td>
           <td><%= criptico.origen %></td>
+          <% estadistica = @estadisticas[criptico.id] %>
+          <td><%= estadistica.veces_jugado %></td>
+          <td><%= estadistica.porcentaje_resuelto ? "#{number_with_precision(estadistica.porcentaje_resuelto, precision: 1)} %" : "—" %></td>
+          <td><%= estadistica.tiempo_promedio ? "#{estadistica.tiempo_promedio} s" : "—" %></td>
           <td>
             <% if !criptico.en_fuente? %>
               <span class="badge text-bg-secondary">Fuera de la fuente</span>
