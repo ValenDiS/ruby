@@ -2,6 +2,16 @@ Rails.application.routes.draw do
   root "inicio#show"
   get "como-se-juega", to: "chatbot#show", as: :chatbot
 
+  scope module: :publico do
+    resource :jugador, only: %i[ new create edit update ]
+    resource :cambio_de_jugador, only: %i[ new create ], controller: "cambios_de_jugador"
+    resources :partidas, only: %i[ new create show ] do
+      post :iniciar, on: :member
+      post :responder, on: :member
+      post :rendirse, on: :member
+    end
+  end
+
   resource :session, only: %i[ new create destroy ]
 
   namespace :admin do

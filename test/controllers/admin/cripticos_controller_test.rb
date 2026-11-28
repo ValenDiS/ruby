@@ -12,6 +12,19 @@ class Admin::CripticosControllerTest < ActionDispatch::IntegrationTest
     assert_includes response.body, cripticos(:mate).id_fuente
   end
 
+  test "el listado muestra las estadísticas de juego de cada críptico" do
+    sign_in_as(users(:admin))
+
+    get admin_cripticos_path
+
+    # Fixtures de partidas: mate se jugó 2 veces (una resuelta en 60 s y una rendida).
+    assert_select "tr", text: /#{cripticos(:mate).id_fuente}/ do
+      assert_select "td", "2"
+      assert_select "td", "50,0 %"
+      assert_select "td", "60 s"
+    end
+  end
+
   test "el admin desactiva y activa un críptico" do
     sign_in_as(users(:admin))
 

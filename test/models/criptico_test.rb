@@ -120,4 +120,11 @@ class CripticoTest < ActiveSupport::TestCase
       cripticos(:mate).update_column(:elegible_dia, nil)
     end
   end
+
+  test "no se puede borrar un críptico con partidas" do
+    criptico = cripticos(:mate)
+
+    assert_not criptico.destroy
+    assert Criptico.exists?(criptico.id)
+  end
 end

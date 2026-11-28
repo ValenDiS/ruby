@@ -54,7 +54,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_11_25_174938) do
     t.boolean "bloqueado", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "nombre_normalizado", null: false
     t.index ["nombre"], name: "index_jugadores_on_nombre", unique: true
+    t.index ["nombre_normalizado"], name: "index_jugadores_on_nombre_normalizado", unique: true
     t.index ["token"], name: "index_jugadores_on_token", unique: true
   end
 

@@ -32,6 +32,18 @@ class Partida < ApplicationRecord
     resuelta? || rendida?
   end
 
+  def intentos_restantes
+    MAXIMO_INTENTOS - intentos
+  end
+
+  # Referencia para el reloj visual; el puntaje conserva su cálculo de segundos_jugados.
+  def segundos_transcurridos
+    return 0 unless iniciada?
+
+    fin = resuelto_at || rendido_at || Time.current
+    [ (fin - iniciado_at).floor, 0 ].max
+  end
+
   # Tiempo oficial: lo calcula el servidor con los dos timestamps, nunca el navegador.
   def segundos_jugados
     return unless iniciada? && resuelta?

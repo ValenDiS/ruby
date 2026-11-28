@@ -3,6 +3,7 @@ class Admin::CripticosController < Admin::BaseController
     @filtros = params.permit(:dificultad, :tipo, :estado, :origen)
     @cripticos = FiltroDeCripticos.new(**@filtros.to_h.symbolize_keys).call.order(:id_fuente)
     @origenes = Criptico.distinct.order(:origen).pluck(:origen).compact
+    @estadisticas = EstadisticasDeCriptico.new(@cripticos).call
   end
 
   # Solo se usa para activar o desactivar.

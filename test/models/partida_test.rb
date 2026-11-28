@@ -75,4 +75,23 @@ class PartidaTest < ActiveSupport::TestCase
     assert_not jugadores(:pedrito).destroy
     assert Jugador.exists?(jugadores(:pedrito).id)
   end
+
+  test "el reloj visual comienza en cero antes de iniciar" do
+    assert_equal 0, @nueva.segundos_transcurridos
+  end
+
+  test "el tiempo transcurrido incluye el tiempo fuera de la página sin límite de horas" do
+    travel_to Time.zone.local(2026, 11, 22, 15, 30) do
+      @nueva.iniciado_at = 25.hours.ago - 65.seconds
+
+      assert_equal 90_065, @nueva.segundos_transcurridos
+    end
+  end
+
+  test "el reloj se detiene al terminar la partida" do
+    travel_to 1.day.from_now do
+      assert_equal 60, partidas(:resuelta).segundos_transcurridos
+      assert_equal 300, partidas(:rendida).segundos_transcurridos
+    end
+  end
 end
